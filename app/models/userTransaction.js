@@ -7,6 +7,8 @@ const UserTransactionSchema = new Schema({
 
   userId: { type: String, default: "" },
 
+  trxLable: { type: String, default: "" },
+
   note: { type: Number, default: "" },
 
   addedOn: { type: Number, default: Date.now() },

@@ -4,6 +4,7 @@
 import * as ValidationManger from "../middleware/validation";
 import TestModule from "../app/modules/testModule";
 import TrxPvtModule from "../app/modules/transactionPrivateNote";
+import AddTransactionLabel from "../app/modules/addTransactionLabel";
 import {stringConstants} from "../app/common/constants";
 
 module.exports = (app) => {
@@ -14,4 +15,5 @@ module.exports = (app) => {
      */
     app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
     app.get("/transaction-private-note",  new TrxPvtModule().transactionPrivateNote);
+    app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
 };
