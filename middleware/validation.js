@@ -8,6 +8,14 @@ module.exports = {
       password: yup.string().min(8).required()
     })
     await validate(schema, req.body, res, next)
+  },
+  validateTransactionLable: async (req, res, next) => {
+    const schema = yup.object().shape({
+      userId: yup.string().required(),
+      trxLable: yup.string().required(),
+      transactionHash: yup.string().required()
+    })
+    await validate(schema, req.body, res, next)
   }
 }
 

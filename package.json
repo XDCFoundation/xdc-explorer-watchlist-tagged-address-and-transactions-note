@@ -1,10 +1,10 @@
 {
-  "name": "node-microservice-template",
+  "name": "node-microservice-User-transactions",
   "version": "1.0.0",
-  "description": "This is template for microservices in node.js.",
+  "description": "This Microservice is for all the BL for  User transactions",
   "main": "server.js",
   "scripts": {
-    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
+    "start": "node ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
     "test": "forever ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
     "nodemon": "nodemon ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js"
   },
