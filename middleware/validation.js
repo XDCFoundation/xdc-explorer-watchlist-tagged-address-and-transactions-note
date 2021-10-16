@@ -16,7 +16,13 @@ module.exports = {
       transactionHash: yup.string().required()
     })
     await validate(schema, req.body, res, next)
-  }
+  },
+  validateGetTransactionLable: async (req, res, next) => {
+    const schema = yup.object().shape({
+      userId: yup.string().required(),
+    })
+    await validate(schema, req.body, res, next)
+  },
 }
 
 const validate = async (schema, reqData, res, next) => {
