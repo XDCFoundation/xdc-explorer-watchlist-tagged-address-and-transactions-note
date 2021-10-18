@@ -1,6 +1,6 @@
 
 
-import UserAddressSchema from "../../models/userAddress";
+import UserAddressSchema from "../../models/userAddressModel";
 import {
     apiFailureMessage,
 } from '../../common/constants';
