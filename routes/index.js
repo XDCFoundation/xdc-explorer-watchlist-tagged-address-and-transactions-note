@@ -12,8 +12,7 @@ module.exports = (app) => {
     /**
      * route definition
      */
-    
-    app.post('/addWatch', new AddWatchList().addWatchList);
-    app.get("/getAddress", new AddWatchList().getAddressByUserId);
-    
+    app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
+    app.get("/transaction-private-note", ValidationManger.validateGetTransactionLable, new TrxPvtModule().transactionPrivateNote);
+    app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
 };

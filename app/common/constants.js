@@ -77,6 +77,8 @@ export const apiFailureMessage = {
   INVALID_PARAMS: 'Invalid Parameters',
   USER_NOT_EXISTS:'user does not exist',
   INVALID_REQUEST: 'Invalid Request',
+  ALREADY_TRANSACTION_HASH_EXIST: 'Transaction hash already in list',
+  USER_NOT_EXIST: 'User is not exist',
   INVALID_SESSION_TOKEN: 'Invalid session token',
   ADDRESS_ALREADY_EXISTS:'user already exists',
   INTERNAL_SERVER_ERROR: 'Internal server Error',
