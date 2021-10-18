@@ -7,7 +7,13 @@ export default class Manger {
         if (!requestData || !requestData.userId || !requestData.trxLable || !requestData.transactionHash)
 
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
-      try {
+      try { 
+        let transactionHash = await UserTransactionSchema.findOne({ transactionHash: requestData.transactionHash ,userId: requestData.userId });
+        // console.log("Tnx Hash",transactionHash)
+        
+        if (transactionHash ) {
+          throw Utils.error({}, apiFailureMessage.ALREADY_TRANSACTION_HASH_EXIST, httpConstants.RESPONSE_CODES.FORBIDDEN);
+        }
           let lableTrx = new UserTransactionSchema(requestData);
           return await lableTrx.save();
       }catch (error) {
