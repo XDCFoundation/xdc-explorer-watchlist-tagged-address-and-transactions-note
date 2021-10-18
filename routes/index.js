@@ -2,7 +2,8 @@
  * Created by AyushK on 18/09/20.
  */
 import * as ValidationManger from "../middleware/validation";
-import TestModule from "../app/modules/testModule";
+
+import AddWatchList from "../app/modules/watchList/index"
 import {stringConstants} from "../app/common/constants";
 
 module.exports = (app) => {
@@ -11,5 +12,8 @@ module.exports = (app) => {
     /**
      * route definition
      */
-    app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
+    
+    app.post('/addWatch', new AddWatchList().addWatchList);
+    app.get("/getAddress", new AddWatchList().getAddressByUserId);
+    
 };

@@ -75,8 +75,10 @@ export const apiEndpoints = {
 
 export const apiFailureMessage = {
   INVALID_PARAMS: 'Invalid Parameters',
+  USER_NOT_EXISTS:'user does not exist',
   INVALID_REQUEST: 'Invalid Request',
   INVALID_SESSION_TOKEN: 'Invalid session token',
+  ADDRESS_ALREADY_EXISTS:'user already exists',
   INTERNAL_SERVER_ERROR: 'Internal server Error',
   BAD_REQUEST: 'Bad Request!',
   DEVICE_ID_OR_SESSION_TOKEN_EMPTY: 'Device id or session token can\'t be empty or null',
