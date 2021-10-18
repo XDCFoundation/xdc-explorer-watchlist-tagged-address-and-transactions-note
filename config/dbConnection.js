@@ -4,6 +4,10 @@ const fs = require('fs')
 
 
 
+const fs = require('fs');
+
+
+
 export default class DBConnection {
   static connect(dbUrl) {
     console.log('DB trying to connect on ' + new Date() + ' to url' + dbUrl)
@@ -14,6 +18,7 @@ export default class DBConnection {
     ];
 
     const options = {
+
       keepAlive: 1,
 
       autoReconnect: true,
