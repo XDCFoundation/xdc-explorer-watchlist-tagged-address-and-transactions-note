@@ -5,7 +5,8 @@ import Utils from "../../utils";
 export default class Manger {
   fetchtransactionPrivateNote = async (requestData) => {
     // API business logic
-    if (!requestData) throw apiFailureMessage.INVALID_PARAMS;
+    
+    if (!requestData ) throw apiFailureMessage.INVALID_PARAMS;
     console.log(requestData);
 
     try {
