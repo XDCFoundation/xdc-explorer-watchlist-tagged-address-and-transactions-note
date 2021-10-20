@@ -19,9 +19,7 @@ module.exports = (app) => {
     app.get("/transaction-private-note", ValidationManger.validateGetTransactionLable, new TrxPvtModule().transactionPrivateNote);
     app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
 
-    app.get("/sign-in", ValidationManger.validateUserLogin, new AuthModule().signIn );
-    app.post("/change-password", ValidationManger.validateUserLogin, new AuthModule().changePassword);
-    app.post('/delete-user', ValidationManger.validateUserLogin, new UserController().deleteUser);
+   
     app.post("/add-address-tag", ValidationManger.validateUserLogin, new UserController().addTagAddress);
     app.get("/get-address-tag", ValidationManger.validateUserLogin, new UserController().getTagAddress);
 
