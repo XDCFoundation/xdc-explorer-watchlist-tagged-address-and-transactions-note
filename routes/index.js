@@ -6,14 +6,16 @@ import TestModule from "../app/modules/testModule";
 import TrxPvtModule from "../app/modules/transactionPrivateNote";
 import AddTransactionLabel from "../app/modules/addTransactionLabel";
 import {stringConstants} from "../app/common/constants";
+import TaggedAddress from "../app/modules/tagAddress";
 
 module.exports = (app) => {
     app.get('/', (req, res) => res.send(stringConstants.SERVICE_STATUS_HTML));
 
-    /**
-     * route definition
-     */
     app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
     app.get("/transaction-private-note/:userId",  new TrxPvtModule().transactionPrivateNote);
     app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
+   
+    app.post("/add-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().addTagAddress);
+    app.get("/get-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().getTagAddress);
+
 };
