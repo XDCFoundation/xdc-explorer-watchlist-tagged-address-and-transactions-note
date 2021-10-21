@@ -7,12 +7,12 @@ import {
 
 
 export default class BlManager {
-  addAddress = async (requestData) => {
+  addWatch = async (requestData) => {
     try {
-      // let userDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });
-      // if (!userDetail) {
-      //   throw apiFailureMessage.USER_NOT_EXISTS
-      // }
+      let userDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });
+      if (!userDetail) {
+        throw apiFailureMessage.USER_NOT_EXISTS
+      }
       let addressDetail = await UserAddressSchema.findOne({ userId: requestData.UserId });({
         address: requestData.address,
        

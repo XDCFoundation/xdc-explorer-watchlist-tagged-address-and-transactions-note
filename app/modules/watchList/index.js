@@ -12,7 +12,7 @@
         if (!request || !request.body)
             throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
-            const [error, addUserResponse] = await Utils.parseResponse(new BlManager().addAddress(request.body));
+            const [error, addUserResponse] = await Utils.parseResponse(new BlManager().addWatch(request.body));
             if (error) {
                 return Utils.handleError(error, request, response);
             }
