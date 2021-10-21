@@ -5,24 +5,22 @@ import {
 } from "../../common/constants";
 import UserSchema from "../../models/userAddress";
 import Utils from "../../utils";
-import AuthManager from "../auth0/manager"
-import UserTransactionSchema from "../../models/userTransaction";
+import TagAddressSchema from "../../models/tagAddress";
 
 export default class Manger {
  
   addTagAddress = async (request) => {
-
+    try{
     if (!request)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
-      try{
-        if (request === true){
-          UserTransactionSchema.save(findObj)
-        }
-    } catch (error) {
+    let addressObj = new TagAddressSchema(request)
+        return await addressObj.save();
+  }
+    catch (error) {
       console.log(error)
       throw error;
     }
@@ -36,7 +34,7 @@ export default class Manger {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try{
-    return UserTransactionSchema.findById()
+    return TagAddressSchema.findOne()
   } catch (error) {
     console.log(error)
     throw error;
