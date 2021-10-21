@@ -14,8 +14,7 @@ class Server {
     Promise.all([DBConnection.connect()]).then(() => {
       app.listen(Config.PORT)
       Utils.lhtLog('listen', `Server Started on port ${Config.PORT}`, {}, 'AyushK', httpConstants.LOG_LEVEL_TYPE.INFO)
-      routes(app)
-      require('./config/jobInitializer')
+      routes(app);
     }).catch(error => Utils.lhtLog('listen', 'failed to connectdb side', { err: error }, 'AyushK', httpConstants.LOG_LEVEL_TYPE.ERROR))
   }
 }

@@ -3,6 +3,8 @@ import * as ValidationManger from "../middleware/validation";
 import AddWatchList from "../app/modules/watchList/index"
 import {stringConstants} from "../app/common/constants";
 import TaggedAddress from "../app/modules/tagAddress";
+import TrxPvtModule from "../app/modules/transactionPrivateNote";
+import AddTransactionLabel from "../app/modules/addTransactionLabel/manger";
 
 module.exports = (app) => {
     app.get('/', (req, res) => res.send(stringConstants.SERVICE_STATUS_HTML));
