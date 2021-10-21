@@ -11,7 +11,7 @@ global.lhtWebLog = Utils.lhtLog
 
 class Server {
   static listen () {
-    Promise.all([DBConnection.connect(Config.DB)]).then(() => {
+    Promise.all([DBConnection.connect()]).then(() => {
       app.listen(Config.PORT)
       Utils.lhtLog('listen', `Server Started on port ${Config.PORT}`, {}, 'AyushK', httpConstants.LOG_LEVEL_TYPE.INFO)
       routes(app)

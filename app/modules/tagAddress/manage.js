@@ -3,7 +3,6 @@ import {
   apiSuccessMessage,
   httpConstants,
 } from "../../common/constants";
-import UserSchema from "../../models/userAddress";
 import Utils from "../../utils";
 import TagAddressSchema from "../../models/tagAddress";
 

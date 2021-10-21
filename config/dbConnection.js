@@ -30,7 +30,7 @@ export default class DBConnection {
 
       retryWrites: false,
 
-      sslCA: [fs.readFileSync('./rds-combined-ca-bundle.pem')],
+      sslCA: [fs.readFileSync(__dirname  +"/rds-combined-ca-bundle.pem")]
 
     }
 
