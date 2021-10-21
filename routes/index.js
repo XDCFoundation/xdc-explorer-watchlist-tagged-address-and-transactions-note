@@ -1,10 +1,6 @@
-/**
- * Created by AyushK on 18/09/20.
- */
 import * as ValidationManger from "../middleware/validation";
-import TestModule from "../app/modules/testModule";
-import TrxPvtModule from "../app/modules/transactionPrivateNote";
-import AddTransactionLabel from "../app/modules/addTransactionLabel";
+
+import AddWatchList from "../app/modules/watchList/index"
 import {stringConstants} from "../app/common/constants";
 import TaggedAddress from "../app/modules/tagAddress";
 
@@ -17,5 +13,7 @@ module.exports = (app) => {
    
     app.post("/add-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().addTagAddress);
     app.get("/get-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().getTagAddress);
+    app.post('/addWatch', new AddWatchList().addWatchList);
+    app.get("/getAddress", new AddWatchList().getAddressByUserId);
 
 };

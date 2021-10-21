@@ -13,7 +13,7 @@ function initialiseJob (job) {
   })
 
   job.on('tick-complete', function (err, res, time) {
-  })
+  })  
 
   job.on('time-warning', function () {
   })
