@@ -81,7 +81,7 @@ export const apiFailureMessage = {
   ALREADY_TRANSACTION_HASH_EXIST: 'Transaction hash already in list',
   USER_NOT_EXIST: 'User is not exist',
   INVALID_SESSION_TOKEN: 'Invalid session token',
-  ADDRESS_ALREADY_EXISTS:'user already exists',
+  ADDRESS_ALREADY_EXISTS:'Address already exists',
   INTERNAL_SERVER_ERROR: 'Internal server Error',
   BAD_REQUEST: 'Bad Request!',
   DEVICE_ID_OR_SESSION_TOKEN_EMPTY: 'Device id or session token can\'t be empty or null',

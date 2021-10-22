@@ -28,6 +28,11 @@ UserAddressSchema.static({
     getUserAddress: function (findQuery) {
         return this.findOne(findQuery);
     },
+    findData: function (findObj) {
+
+        return this.find(findObj)
+        
+        },
     updateUserAddress: function (findObj, updateObj) {
         return this.findOneAndUpdate(findObj, updateObj, {
             returnNewDocument: true,

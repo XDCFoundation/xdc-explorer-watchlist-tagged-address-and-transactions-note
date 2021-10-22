@@ -13,11 +13,8 @@ export default class BlManager {
       if (!userDetail) {
         throw apiFailureMessage.USER_NOT_EXISTS
       }
-      let addressDetail = await UserAddressSchema.findOne({ userId: requestData.UserId });({
-        address: requestData.address,
-       
-        
-      });
+      let addressDetail = await UserAddressSchema.find({ address: requestData.address});
+
       if (addressDetail && addressDetail.length) {
         throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
       }
@@ -32,7 +29,7 @@ export default class BlManager {
     if (!requestData)
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
 
-    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, UserId: requestData.UserId })
+    return await UserAddressSchema.findData({ isActive: true, isDeleted: false, UserId: requestData.UserId })
 
 }
 }
