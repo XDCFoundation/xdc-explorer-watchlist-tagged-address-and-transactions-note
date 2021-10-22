@@ -18,6 +18,6 @@ module.exports = (app) => {
     app.post("/add-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().addTagAddress);
     app.get("/get-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().getTagAddress);
     app.post('/addWatch', new AddWatchList().addWatchList);
-    app.get("/getAddress", new AddWatchList().getAddressByUserId);
+    app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
 
 };
