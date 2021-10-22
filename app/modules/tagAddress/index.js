@@ -4,7 +4,6 @@ import Manager from './manage'
 
 export default class Index {
  
-
   async addTagAddress(request, response) {
     if (!request || !request.body.address || !request.body.tagName )
       throw Utils.error(
