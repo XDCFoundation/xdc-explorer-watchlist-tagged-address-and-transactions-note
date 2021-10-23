@@ -39,4 +39,22 @@ export default class Manger {
   }
   }
 
+  editTagAddress = async ({ userId, address, tagName }) => {
+    if (!userId)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try{
+      let userDetail = await TagAddressSchema.findOne({ userId });
+      if (!userDetail) {
+        throw apiFailureMessage.USER_NOT_EXISTS
+      }
+      return await TagAddressSchema.updateOne({userId, address, tagName })
+    } catch (error) {
+    throw error;
+  }
+  }
+
 }
