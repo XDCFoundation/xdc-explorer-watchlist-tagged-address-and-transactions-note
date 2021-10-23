@@ -7,6 +7,7 @@ import TaggedAddress from "../app/modules/tagAddress";
 import AddWatchList from "../app/modules/watchList";
 import NotifyUser from "../app/modules/notification"
 
+
 module.exports = (app) => {
     app.get('/', (req, res) => res.send(stringConstants.SERVICE_STATUS_HTML));
 
@@ -31,5 +32,7 @@ module.exports = (app) => {
     app.get("/getAddress", new AddWatchList().getAddressByUserId);
 
     app.get("/notify-user", ValidationManger.validateUserAddress, new NotifyUser().notifyUser);
+
+    app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
 
 };

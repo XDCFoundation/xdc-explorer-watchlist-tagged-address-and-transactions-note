@@ -42,6 +42,10 @@ UserTransactionSchema.static({
     updateUserTransaction: function (findObj, updateObj) {
         return this.updateMany(findObj, updateObj);
     },
+    
+    findAndUpdateData: function (findObj, updateObj) {
+        return this.findOneAndUpdate(findObj, updateObj, { new: true })
+      },
 
     getUserTransaction: function (
         findObj,
