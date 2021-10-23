@@ -30,6 +30,15 @@ module.exports = {
     })
     await validate(schema, req.body, res, next)
   },
+
+  validateEditTransactionPrivateNote: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required(),
+      trxLable: yup.string(),
+      transactionHash: yup.string()
+    })
+    await validate(schema, req.body, res, next)
+  },
 }
 
 const validate = async (schema, reqData, res, next) => {

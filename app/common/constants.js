@@ -67,7 +67,8 @@ export const genericConstants = {
 
 export const apiSuccessMessage = {
   FETCH_SUCCESS: 'Information fetched successfully',
-  USER_GET_SUCCESS:'User is successfully added'
+  USER_GET_SUCCESS:'User is successfully added',
+  INFO_UPDATED:'User info is sucessfully Updated'
 }
 
 export const apiEndpoints = {
@@ -76,7 +77,7 @@ export const apiEndpoints = {
 
 export const apiFailureMessage = {
   INVALID_PARAMS: 'Invalid Parameters',
-  USER_NOT_EXISTS:'user does not exist',
+  USER_NOT_EXISTS:'UserID does not exist',
   INVALID_REQUEST: 'Invalid Request',
   ALREADY_TRANSACTION_HASH_EXIST: 'Transaction hash already in list',
   USER_NOT_EXIST: 'User is not exist',

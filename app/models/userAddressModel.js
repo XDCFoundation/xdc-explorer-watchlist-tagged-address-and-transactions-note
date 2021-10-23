@@ -33,6 +33,9 @@ UserAddressSchema.static({
         return this.find(findObj)
         
         },
+        findAndUpdateData: function (findObj, updateObj) {
+            return this.findOneAndUpdate(findObj, updateObj, { new: true })
+          },
     updateUserAddress: function (findObj, updateObj) {
         return this.findOneAndUpdate(findObj, updateObj, {
             returnNewDocument: true,
