@@ -23,6 +23,9 @@ module.exports = (app) => {
     app.get("/get-address-tag", ValidationManger.validateGetTransactionLable, new TaggedAddress().getTagAddress);
     
     app.post('/addWatch', new AddWatchList().addWatchList);
+
+    app.put('/edit-watchlist', new AddWatchList().editWatchList);
+
     app.get("/getAddress", new AddWatchList().getAddressByUserId);
 
     app.get("/notify-user", ValidationManger.validateUserAddress, new NotifyUser().notifyUser);

@@ -22,8 +22,24 @@
             Utils.handleError(error, request, response);
         }
     }
+
+    async editWatchList(request, response) {
+        if (!request || !request.body)
+            throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
+        try {
+            const [error, addUserResponse] = await Utils.parseResponse(new BlManager().editWatchList(request.body));
+            if (error) {
+                return Utils.handleError(error, request, response);
+            }
+            
+            Utils.response(response, addUserResponse, apiSuccessMessage.USER_ADD_SUCCESS, httpConstants.RESPONSE_STATUS.SUCCESS, httpConstants.RESPONSE_CODES.OK)
+        } catch (error) {
+            Utils.handleError(error, request, response);
+        }
+    }
+
     async getAddressByUserId(request, response) {
-        if (!request || !request.body || !request.body.UserId)
+        if (!request || !request.body || !request.body.userId)
             throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
             const [error, addUserResponse] = await Utils.parseResponse(new BlManager().getAddressByUserId(request.body));

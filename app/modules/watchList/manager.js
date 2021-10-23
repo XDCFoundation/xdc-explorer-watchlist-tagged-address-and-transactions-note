@@ -9,11 +9,11 @@ import {
 export default class BlManager {
   addWatch = async (requestData) => {
     try {
-      let userDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });
+      let userDetail = await UserAddressSchema.findOne({ userId: requestData.userId });
       if (!userDetail) {
         throw apiFailureMessage.USER_NOT_EXISTS
       }
-      let addressDetail = await UserAddressSchema.findOne({ userId: requestData.UserId });({
+      let addressDetail = await UserAddressSchema.findOne({ userId: requestData.userId });({
         address: requestData.address,
        
         
@@ -28,13 +28,29 @@ export default class BlManager {
       throw err;
     }
   };
+
+  editWatchList = async (requestData) => {
+    try {
+      let userDetail = await UserAddressSchema.findOne({ userId: requestData.userId });
+      if (!userDetail) {
+        throw apiFailureMessage.USER_NOT_EXISTS
+      }
+     
+      let addressObj = new UserAddressSchema(requestData);
+      return await addressObj.save();
+
+    } catch (err) {
+      throw err;
+    }
+  };
+
   async getAddressByUserId(requestData) {
     if (!requestData)
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
 
-    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, UserId: requestData.UserId })
+    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, userId: requestData.userId })
 
-}
+  }
 }
 
 
