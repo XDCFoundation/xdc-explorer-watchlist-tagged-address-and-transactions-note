@@ -15,9 +15,13 @@ module.exports = (app) => {
      */
     // app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
     app.get("/transaction-private-note/:userId",  new TrxPvtModule().transactionPrivateNote);
+
     app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
+
     app.post("/add-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().addTagAddress);
-    app.get("/get-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().getTagAddress);
+
+    app.get("/get-address-tag", ValidationManger.validateGetTransactionLable, new TaggedAddress().getTagAddress);
+    
     app.post('/addWatch', new AddWatchList().addWatchList);
     app.get("/getAddress", new AddWatchList().getAddressByUserId);
 

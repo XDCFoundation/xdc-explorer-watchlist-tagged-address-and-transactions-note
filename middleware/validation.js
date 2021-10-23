@@ -25,6 +25,7 @@ module.exports = {
   },
     validateTagAddressLable: async (req, res, next) => {
     const schema = yup.object().shape({
+      userId: yup.string().required(),
       address: yup.string().required(),
       tagName: yup.string().required(),
     })

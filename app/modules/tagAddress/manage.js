@@ -25,18 +25,18 @@ export default class Manger {
     }
   }
 
-  async getTagAddress(request) {
-    if (!request)
+  getTagAddress = async ({ userId }) => {
+    if (!userId)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try{
-    return TagAddressSchema.findOne()
-  } catch (error) {
-    console.log(error)
+      return await TagAddressSchema.find({userId})
+    } catch (error) {
     throw error;
   }
   }
+
 }

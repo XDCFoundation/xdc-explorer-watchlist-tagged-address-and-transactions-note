@@ -5,7 +5,7 @@ import Manager from './manage'
 export default class Index {
  
   async addTagAddress(request, response) {
-    if (!request || !request.body.address || !request.body.tagName )
+    if (!request || !request.body.userId || !request.body.address )
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -31,13 +31,15 @@ export default class Index {
   }
 
   async getTagAddress(request, response) {
-    if (!request )
+    if (!request.body.userId )
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
+      console.log(request.body.userId)
+
       const [error, addUserResponse] = await Utils.parseResponse(
         new Manager().getTagAddress(request.body)
       );

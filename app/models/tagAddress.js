@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const tagSchema = new mongoose.Schema({
+  userId: {type: Number, default: ''},
   tagName: { type: String, default: '' },
   address: { type: String, default: '' },
   addedOn: { type: Number, default: Date.now() },

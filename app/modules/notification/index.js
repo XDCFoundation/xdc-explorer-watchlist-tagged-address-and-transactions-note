@@ -5,7 +5,7 @@ import { apiSuccessMessage, apiFailureMessage, httpConstants } from '../../commo
 export default class Notification {
 
   async notifyUser(request, response) {
-    if (!request || !request.body.userId || !request.body.address )
+    if ( !request.body.userId || !request.body.address )
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -21,7 +21,6 @@ export default class Notification {
       return Utils.response(
         response,
         addUserResponse,
-        apiSuccessMessage.ADDRESS_TAG_ADD,
         httpConstants.RESPONSE_STATUS.SUCCESS,
         httpConstants.RESPONSE_CODES.OK
       );
