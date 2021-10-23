@@ -31,15 +31,14 @@
             if (error) {
                 return Utils.handleError(error, request, response);
             }
-            
-            Utils.response(response, addUserResponse, apiSuccessMessage.USER_ADD_SUCCESS, httpConstants.RESPONSE_STATUS.SUCCESS, httpConstants.RESPONSE_CODES.OK)
+            Utils.response(response, addUserResponse, apiSuccessMessage.USER_DATA_CHANGE, httpConstants.RESPONSE_STATUS.SUCCESS, httpConstants.RESPONSE_CODES.OK)
         } catch (error) {
             Utils.handleError(error, request, response);
         }
     }
 
     async getAddressByUserId(request, response) {
-        if (!request || !request.body || !request.body.userId)
+        if (!request || !request.body || !request.body.UserId)
             throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
             const [error, addUserResponse] = await Utils.parseResponse(new BlManager().getAddressByUserId(request.body));
@@ -51,6 +50,7 @@
             Utils.handleError(error, request, response);
         }
     }
+    
  }
  
  

@@ -67,7 +67,8 @@ export const genericConstants = {
 
 export const apiSuccessMessage = {
   FETCH_SUCCESS: 'Information fetched successfully',
-  USER_GET_SUCCESS:'User is successfully added'
+  USER_GET_SUCCESS:'User is successfully added',
+  USER_DATA_CHANGE: "User data successfully changed"
 }
 
 export const apiEndpoints = {

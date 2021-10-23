@@ -9,11 +9,11 @@ import {
 export default class BlManager {
   addWatch = async (requestData) => {
     try {
-      let userDetail = await UserAddressSchema.findOne({ userId: requestData.userId });
+      let userDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });
       if (!userDetail) {
         throw apiFailureMessage.USER_NOT_EXISTS
       }
-      let addressDetail = await UserAddressSchema.findOne({ userId: requestData.userId });({
+      let addressDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });({
         address: requestData.address,
        
         
@@ -29,15 +29,13 @@ export default class BlManager {
     }
   };
 
-  editWatchList = async (requestData) => {
+  editWatchList = async ({UserId, address, description, balance, notification}) => {
     try {
-      let userDetail = await UserAddressSchema.findOne({ userId: requestData.userId });
+      let userDetail = await UserAddressSchema.findOne({ UserId });
       if (!userDetail) {
         throw apiFailureMessage.USER_NOT_EXISTS
       }
-     
-      let addressObj = new UserAddressSchema(requestData);
-      return await addressObj.save();
+      return await UserAddressSchema.updateOne({UserId, address, description, balance, notification})
 
     } catch (err) {
       throw err;
@@ -48,7 +46,7 @@ export default class BlManager {
     if (!requestData)
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
 
-    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, userId: requestData.userId })
+    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, UserId: requestData.UserId })
 
   }
 }
