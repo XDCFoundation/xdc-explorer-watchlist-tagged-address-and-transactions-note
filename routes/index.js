@@ -31,7 +31,7 @@ module.exports = (app) => {
 
     app.get("/getAddress", new AddWatchList().getAddressByUserId);
 
-    app.get("/notify-user", ValidationManger.validateUserAddress, new NotifyUser().notifyUser);
+    app.get("/notify-user", ValidationManger.validateGetTransactionLable, new NotifyUser().notifyUser);
 
     app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
 

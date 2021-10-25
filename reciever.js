@@ -10,10 +10,10 @@ amqp.connect('amqp://localhost', (connError, connection) => {
         }
         const QUEUE = 'test'
         channel.assertQueue(QUEUE);
-        channel.sendToQueue(QUEUE, Buffer.from('hello'));
-        console.log(`Message send ${QUEUE}`);
-        setTimeout(() => {
-            connection.close();
-        }, 1000)
+        channel.consume(QUEUE, (msg) => {
+            console.log(`Message received: ${msg.content.toString()}`)
+        }, {
+            noAck: true
+        })
     })
 })

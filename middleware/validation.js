@@ -19,7 +19,7 @@ module.exports = {
   },
   validateGetTransactionLable: async (req, res, next) => {
     const schema = yup.object().shape({
-      userId: yup.string().required(),
+      UserId: yup.string().required(),
     });
     await validate(schema, req.body, res, next);
   },
