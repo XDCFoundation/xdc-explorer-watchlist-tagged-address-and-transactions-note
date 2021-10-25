@@ -20,7 +20,7 @@ module.exports = (app) => {
     app.post("/add-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().addTagAddress);
     app.get("/get-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().getTagAddress);
 
-    app.post('/addWatch', new AddWatchList().addWatchList);
+    app.post('/addWatchList', new AddWatchList().addWatchList);
     app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
 
     app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
