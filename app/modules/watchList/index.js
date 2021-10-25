@@ -38,10 +38,10 @@
     }
 
     async getAddressByUserId(request, response) {
-        if (!request || !request.body || !request.body.UserId)
+        if (!request || !request.params || !request.params.UserId)
             throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
-            const [error, addUserResponse] = await Utils.parseResponse(new BlManager().getAddressByUserId(request.body));
+            const [error, addUserResponse] = await Utils.parseResponse(new BlManager().getAddressByUserId(request.params));
             if (error) {
                 return Utils.handleError(error, request, response);
             }

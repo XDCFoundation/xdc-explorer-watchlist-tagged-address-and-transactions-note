@@ -16,7 +16,7 @@ export default class Manger {
       let userId = await UserTransactionSchema.findOne({
         userId: requestData.userId,
       });
-      console.log("userId: ", userId);
+      // console.log("userId: ", userId);
       if (!userId) {
         throw Utils.error(
           {},
