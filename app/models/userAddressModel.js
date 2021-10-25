@@ -30,6 +30,9 @@ UserAddressSchema.static({
   findData: function (findObj) {
     return this.find(findObj);
   },
+  findData: function (findObj) {
+    return this.find(findObj);
+  },
   findAndUpdateData: function (findObj, updateObj) {
     return this.findOneAndUpdate(findObj, updateObj, { new: true });
   },
@@ -38,9 +41,9 @@ UserAddressSchema.static({
       returnNewDocument: true,
     });
   },
-//   updateUserAddress: function (findObj, updateObj) {
-//     return this.updateMany(findObj, updateObj);
-//   },
+  //   updateUserAddress: function (findObj, updateObj) {
+  //     return this.updateMany(findObj, updateObj);
+  //   },
   bulkUpsert: function (bulkOps) {
     return this.bulkWrite(bulkOps);
   },

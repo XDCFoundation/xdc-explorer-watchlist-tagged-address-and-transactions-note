@@ -46,7 +46,7 @@ export default class BlManager {
     if (!requestData)
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
 
-    return await UserAddressSchema.getUserAddress({ isActive: true, isDeleted: false, UserId: requestData.UserId })
+    return await UserAddressSchema.find({ isActive: true, isDeleted: false, UserId: requestData.UserId })
 
   }
 }
