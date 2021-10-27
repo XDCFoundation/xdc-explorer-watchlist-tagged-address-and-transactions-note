@@ -4,8 +4,8 @@ const tagSchema = new mongoose.Schema({
   userId: {type: Number, default: ''},
   tagName: { type: String, default: '' },
   address: { type: String, default: '' },
-  addedOn: { type: Number, default: Date.now() },
-  modifiedOn: { type: Number, default: Date.now() }
+  addedOn: { type: Number, default: new Date() },
+  modifiedOn: { type: Number, default: new Date() }
 })
 
 tagSchema.method({

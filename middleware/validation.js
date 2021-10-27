@@ -25,7 +25,7 @@ module.exports = {
   },
   validateTagAddressLable: async (req, res, next) => {
     const schema = yup.object().shape({
-      userId: yup.string().required(),
+      _id: yup.string().required(),
       address: yup.string().required(),
       tagName: yup.string().required(),
     });
@@ -35,6 +35,14 @@ module.exports = {
     const schema = yup.object().shape({
       userId: yup.string().required(),
       address: yup.string().required(),
+    });
+    await validate(schema, req.body, res, next);
+  },
+  validateWatchList: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required(),
+      address: yup.string().required(),
+      description: yup.string().required(),
     });
     await validate(schema, req.body, res, next);
   },

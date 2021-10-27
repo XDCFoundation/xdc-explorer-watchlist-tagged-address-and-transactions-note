@@ -24,10 +24,10 @@ module.exports = (app) => {
     app.post('/addWatchList', new AddWatchList().addWatchList);
     app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
 
-    app.get("/notify-user", ValidationManger.validateGetTransactionLable, new NotifyUser().notifyUser);
+    app.post("/notify-user", ValidationManger.validateGetTransactionLable, new NotifyUser().notifyUser);
 
     app.put("/edit-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().editTagAddress);
-    app.put('/edit-watchlist', new AddWatchList().editWatchList);
+    app.put('/edit-watchlist',ValidationManger.validateWatchList, new AddWatchList().editWatchList);
     app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
 
 };

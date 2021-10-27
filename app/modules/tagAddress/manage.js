@@ -39,19 +39,40 @@ export default class Manger {
   }
   }
 
-  editTagAddress = async ({ userId, address, tagName }) => {
-    if (!userId)
+  editTagAddress = async (request) => {
+    if (!request)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try{
-      let userDetail = await TagAddressSchema.findOne({ userId });
-      if (!userDetail) {
-        throw apiFailureMessage.USER_NOT_EXISTS
+      let updateObj = await TagAddressSchema.findOne({ _id: request._id });
+
+      updateObj = {
+        modifiedOn: new Date().getTime(),
+      };
+      if (!updateObj) {
+        throw Utils.error(
+          {},
+          apiFailureMessage.ID_NOT_EXIST,
+          httpConstants.RESPONSE_CODES.FORBIDDEN
+        );      
       }
-      return await TagAddressSchema.updateOne({userId, address, tagName })
+      if (request.address) {
+        updateObj["address"] = request.address;
+      }
+
+      if (request.tagName) {
+        updateObj["tagName"] = request.tagName;
+      }
+      // console.log("update", updateObj);
+
+      return TagAddressSchema.findOneAndUpdateData(
+        { _id: request._id },
+        updateObj
+      );
+    
     } catch (error) {
     throw error;
   }

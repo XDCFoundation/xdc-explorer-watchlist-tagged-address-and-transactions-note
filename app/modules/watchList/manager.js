@@ -29,14 +29,35 @@ export default class BlManager {
     }
   };
 
-  editWatchList = async ({UserId, address, description, balance, notification}) => {
+  editWatchList = async (request) => {
+    if (!request)
+    throw Utils.error(
+      {},
+      apiFailureMessage.INVALID_PARAMS,
+      httpConstants.RESPONSE_CODES.FORBIDDEN
+    );
     try {
-      let userDetail = await UserAddressSchema.findOne({ UserId });
-      if (!userDetail) {
-        throw apiFailureMessage.USER_NOT_EXISTS
+      let userDetail = await UserAddressSchema.findOne({ _id: request._id });
+      userDetail = {
+        modifiedOn: new Date().getTime(),
       }
-      return await UserAddressSchema.updateOne({UserId, address, description, balance, notification})
+      if (!userDetail) {
+        throw Utils.error(
+          {},
+          apiFailureMessage.ID_NOT_EXIST,
+          httpConstants.RESPONSE_CODES.FORBIDDEN
+        );      
+      }
+      if (request.address) {
+        userDetail["address"] = request.address;
+      }
 
+      if (request.description) {
+        userDetail["description"] = request.description;
+      }
+      return await UserAddressSchema.updateUserAddress({ _id: request._id },
+        userDetail
+      );
     } catch (err) {
       throw err;
     }

@@ -79,6 +79,7 @@ export const apiEndpoints = {
 export const apiFailureMessage = {
   INVALID_PARAMS: 'Invalid Parameters',
   USER_NOT_EXISTS:'UserID does not exist',
+  ID_NOT_EXISTS:'ID does not exist',
   INVALID_REQUEST: 'Invalid Request',
   ALREADY_TRANSACTION_HASH_EXIST: 'Transaction hash already in list',
   USER_NOT_EXIST: 'User is not exist',

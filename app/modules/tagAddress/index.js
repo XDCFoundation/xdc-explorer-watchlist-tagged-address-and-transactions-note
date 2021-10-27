@@ -60,14 +60,13 @@ export default class Index {
   }
 
   async editTagAddress(request, response) {
-    if (!request.body.userId )
+    if (!request)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      console.log(request.body.userId)
 
       const [error, addUserResponse] = await Utils.parseResponse(
         new Manager().editTagAddress(request.body)
@@ -76,7 +75,6 @@ export default class Index {
         return Utils.handleError(error, request, response);
       }
       return Utils.response(
-        
         response,
         addUserResponse,
         apiSuccessMessage.GET_ADDRESS_SUCCESS,
