@@ -5,7 +5,7 @@ import Manager from './manage'
 export default class Index {
  
   async addTagAddress(request, response) {
-    if (!request || !request.body.userId || !request.body.address )
+    if (!request || !request.body)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -26,7 +26,7 @@ export default class Index {
         httpConstants.RESPONSE_CODES.OK
       );
     } catch (error) {
-      Utils.handleError(error, request, response);
+      throw error
     }
   }
 

@@ -16,7 +16,7 @@ export default class AddWatchList {
       );
     try {
       const [error, addUserResponse] = await Utils.parseResponse(
-        new BlManager().addWatch(request.body)
+        new BlManager().addWatchlist(request.body)
       );
       if (error) {
         return Utils.handleError(error, request, response);
@@ -61,7 +61,7 @@ export default class AddWatchList {
   }
 
   async getAddressByUserId(request, response) {
-    if (!request || !request.params || !request.params.UserId)
+    if (!request || !request.params || !request.params.userId)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -85,4 +85,5 @@ export default class AddWatchList {
       Utils.handleError(error, request, response);
     }
   }
+
 }

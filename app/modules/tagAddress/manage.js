@@ -7,23 +7,28 @@ import Utils from "../../utils";
 import TagAddressSchema from "../../models/tagAddress";
 
 export default class Manger {
- 
   addTagAddress = async (request) => {
-    try{
-    if (!request)
+    if (!request || !request.userId || !request.address || !request.tagName)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
-    let addressObj = new TagAddressSchema(request)
+    try {
+      let TagDetails = request.address;
+      if (TagDetails) {
+      TagDetails = await TagAddressSchema.findOne({
+        address: request.address,
+      });
+        throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+      } else {
+        let addressObj = new TagAddressSchema(request);
         return await addressObj.save();
-  }
-    catch (error) {
-      console.log(error)
+      }
+    } catch (error) {
       throw error;
     }
-  }
+  };
 
   getTagAddress = async ({ userId }) => {
     if (!userId)
@@ -32,12 +37,12 @@ export default class Manger {
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
-    try{
-      return await TagAddressSchema.find({userId})
+    try {
+      return await TagAddressSchema.find({ userId });
     } catch (error) {
-    throw error;
-  }
-  }
+      throw error;
+    }
+  };
 
   editTagAddress = async (request) => {
     if (!request)
@@ -46,9 +51,8 @@ export default class Manger {
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
-    try{
+    try {
       let updateObj = await TagAddressSchema.findOne({ _id: request._id });
-
       updateObj = {
         modifiedOn: new Date().getTime(),
       };
@@ -57,7 +61,7 @@ export default class Manger {
           {},
           apiFailureMessage.ID_NOT_EXIST,
           httpConstants.RESPONSE_CODES.FORBIDDEN
-        );      
+        );
       }
       if (request.address) {
         updateObj["address"] = request.address;
@@ -66,16 +70,13 @@ export default class Manger {
       if (request.tagName) {
         updateObj["tagName"] = request.tagName;
       }
-      // console.log("update", updateObj);
 
       return TagAddressSchema.findOneAndUpdateData(
         { _id: request._id },
         updateObj
       );
-    
     } catch (error) {
-    throw error;
-  }
-  }
-
+      throw error;
+    }
+  };
 }

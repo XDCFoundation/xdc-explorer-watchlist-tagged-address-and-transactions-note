@@ -3,7 +3,7 @@ let Schema = mongoose.Schema;
 
 const UserAddressSchema = new Schema({
   address: { type: String, default: "" },
-  UserId: { type: String, default: "" },
+  userId: { type: String, default: "" },
   description: { type: String, default: "" },
   nameTag: { type: Number, default: "" },
   balance: { type: Number, default: 0 },

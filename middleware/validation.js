@@ -19,15 +19,23 @@ module.exports = {
   },
   validateGetTransactionLable: async (req, res, next) => {
     const schema = yup.object().shape({
-      UserId: yup.string().required(),
+      userId: yup.string().required(),
     });
     await validate(schema, req.body, res, next);
   },
   validateTagAddressLable: async (req, res, next) => {
     const schema = yup.object().shape({
-      _id: yup.string().required(),
+      userId: yup.string().required(),
       address: yup.string().required(),
       tagName: yup.string().required(),
+    });
+    await validate(schema, req.body, res, next);
+  },
+  validateEditTagAddressLable: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string(),
+      address: yup.string(),
+      tagName: yup.string(),
     });
     await validate(schema, req.body, res, next);
   },
@@ -40,9 +48,17 @@ module.exports = {
   },
   validateWatchList: async (req, res, next) => {
     const schema = yup.object().shape({
-      _id: yup.string().required(),
+      // _id: yup.string().required(),
       address: yup.string().required(),
       description: yup.string().required(),
+    });
+    await validate(schema, req.body, res, next);
+  },
+  validateEditWatchList: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required(),
+      address: yup.string(),
+      description: yup.string(),
     });
     await validate(schema, req.body, res, next);
   },

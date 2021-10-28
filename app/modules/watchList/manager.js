@@ -1,52 +1,49 @@
-
-
+import Utils from "../../utils/index";
 import UserAddressSchema from "../../models/userAddressModel";
-import {
-    apiFailureMessage,
-} from '../../common/constants';
-
+import { apiFailureMessage, httpConstants } from "../../common/constants";
 
 export default class BlManager {
-  addWatch = async (requestData) => {
+  addWatchlist = async (request) => {
+    if (!request || !request.userId || !request.address || !request.description)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
     try {
-      let userDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });
-      if (!userDetail) {
-        throw apiFailureMessage.USER_NOT_EXISTS
-      }
-      let addressDetail = await UserAddressSchema.findOne({ UserId: requestData.UserId });({
-        address: requestData.address,
-       
-        
+      let addressDetail = request.address;
+      if (addressDetail) {
+      addressDetail = await UserAddressSchema.findOne({
+        address: request.address,
       });
-      if (addressDetail && addressDetail.length) {
         throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
-      }
-      let addressObj = new UserAddressSchema(requestData);
+      } else {
+      let addressObj = new UserAddressSchema(request);
       return await addressObj.save();
-
+      }
     } catch (err) {
       throw err;
     }
   };
 
   editWatchList = async (request) => {
-    if (!request)
-    throw Utils.error(
-      {},
-      apiFailureMessage.INVALID_PARAMS,
-      httpConstants.RESPONSE_CODES.FORBIDDEN
-    );
+    if (!request || !request._id)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
     try {
       let userDetail = await UserAddressSchema.findOne({ _id: request._id });
       userDetail = {
         modifiedOn: new Date().getTime(),
-      }
+      };
       if (!userDetail) {
         throw Utils.error(
           {},
           apiFailureMessage.ID_NOT_EXIST,
           httpConstants.RESPONSE_CODES.FORBIDDEN
-        );      
+        );
       }
       if (request.address) {
         userDetail["address"] = request.address;
@@ -55,7 +52,8 @@ export default class BlManager {
       if (request.description) {
         userDetail["description"] = request.description;
       }
-      return await UserAddressSchema.updateUserAddress({ _id: request._id },
+      return await UserAddressSchema.findAndUpdateData(
+        { _id: request._id },
         userDetail
       );
     } catch (err) {
@@ -65,11 +63,29 @@ export default class BlManager {
 
   async getAddressByUserId(requestData) {
     if (!requestData)
-        throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
 
-    return await UserAddressSchema.find({ isActive: true, isDeleted: false, UserId: requestData.UserId })
+    return await UserAddressSchema.find({
+      isActive: true,
+      isDeleted: false,
+      userId: requestData.userId,
+    });
+  }
 
+  async getListOfWatchList(request) {
+    if (!request)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try {
+    } catch (err) {
+      throw err;
+    }
   }
 }
-
-

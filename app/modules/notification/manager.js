@@ -8,15 +8,15 @@ import UserAddressSchema from "../../models/userAddressModel";
 
 export default class Manger {
  
-  notifyUser = async ({UserId}) => {
+  notifyUser = async ({userId}) => {
     try{
-    if (!UserId)
+    if (!userId)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
-      return UserAddressSchema.findOne({ UserId })
+      return UserAddressSchema.findOne({ userId })
   }
     catch (error) {
       throw error;
