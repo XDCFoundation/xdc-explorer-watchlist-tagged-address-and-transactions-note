@@ -15,15 +15,14 @@ export default class Manger {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      let TagDetails = request.address;
-      if (TagDetails) {
-      TagDetails = await TagAddressSchema.findOne({
+      let TagDetails = await TagAddressSchema.findOneData({
         address: request.address,
       });
+      if (TagDetails) {
         throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
       } else {
         let addressObj = new TagAddressSchema(request);
-        return await addressObj.save();
+        return await addressObj.saveData();
       }
     } catch (error) {
       throw error;
@@ -52,7 +51,7 @@ export default class Manger {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      let updateObj = await TagAddressSchema.findOne({ _id: request._id });
+      let updateObj = await TagAddressSchema.findOneData({ _id: request._id });
       updateObj = {
         modifiedOn: new Date().getTime(),
       };

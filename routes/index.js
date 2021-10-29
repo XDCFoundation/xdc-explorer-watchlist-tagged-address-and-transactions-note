@@ -5,7 +5,6 @@ import AddTransactionLabel from "../app/modules/addTransactionLabel";
 import {stringConstants} from "../app/common/constants";
 import TaggedAddress from "../app/modules/tagAddress";
 import AddWatchList from "../app/modules/watchList";
-import NotifyUser from "../app/modules/notification"
 
 
 module.exports = (app) => {
@@ -26,8 +25,6 @@ module.exports = (app) => {
     app.post('/add-watchlist', ValidationManger.validateWatchList, new AddWatchList().addWatchList);
 
     app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
-
-    app.post("/notify-user", ValidationManger.validateGetTransactionLable, new NotifyUser().notifyUser);
 
     app.put("/edit-address-tag", ValidationManger.validateEditTagAddressLable, new TaggedAddress().editTagAddress);
 

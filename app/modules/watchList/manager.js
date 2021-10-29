@@ -11,16 +11,15 @@ export default class BlManager {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      let addressDetail = request.address;
-      if (addressDetail) {
-      addressDetail = await UserAddressSchema.findOne({
+      let addressDetail = await UserAddressSchema.findOne({
         address: request.address,
       });
+      if (addressDetail) {
         throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
-      } else {
+      } 
       let addressObj = new UserAddressSchema(request);
-      return await addressObj.save();
-      }
+      return await addressObj.saveData();
+      
     } catch (err) {
       throw err;
     }
@@ -34,7 +33,7 @@ export default class BlManager {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      let userDetail = await UserAddressSchema.findOne({ _id: request._id });
+      let userDetail = await UserAddressSchema.getUserAddress({ _id: request._id });
       userDetail = {
         modifiedOn: new Date().getTime(),
       };
