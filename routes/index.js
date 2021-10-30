@@ -6,6 +6,7 @@ import {stringConstants} from "../app/common/constants";
 import TaggedAddress from "../app/modules/tagAddress";
 import AddWatchList from "../app/modules/watchList";
 import NotifyUser from "../app/modules/notification"
+import SearchData from "../app/modules/search"
 
 
 module.exports = (app) => {
@@ -15,6 +16,7 @@ module.exports = (app) => {
      * route definition
      */
     // app.get("/test-route", ValidationManger.validateUserLogin, new TestModule().testRoute);
+    app.post('/search', new SearchData().searchData);
     app.get("/transaction-private-note/:userId",  new TrxPvtModule().transactionPrivateNote);
     app.post("/add-transaction-label", ValidationManger.validateTransactionLable, new AddTransactionLabel().addTransactionLabel);
 
@@ -25,9 +27,12 @@ module.exports = (app) => {
     app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
 
     app.get("/notify-user", ValidationManger.validateUserAddress, new NotifyUser().notifyUser);
+    
 
     app.put("/edit-address-tag", ValidationManger.validateTagAddressLable, new TaggedAddress().editTagAddress);
     app.put('/edit-watchlist', new AddWatchList().editWatchList);
     app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
+
+    
 
 };
