@@ -30,9 +30,6 @@ UserAddressSchema.static({
   findData: function (findObj) {
     return this.find(findObj);
   },
-  findData: function (findObj) {
-    return this.find(findObj);
-  },
   findAndUpdateData: function (findObj, updateObj) {
     return this.findOneAndUpdate(findObj, updateObj, { new: true });
   },
@@ -46,6 +43,19 @@ UserAddressSchema.static({
   //   },
   bulkUpsert: function (bulkOps) {
     return this.bulkWrite(bulkOps);
+  },
+  getFilteredData: function (
+    requestData,
+    selectionKeys,
+    offset,
+    limit,
+    sortingKey
+  ) {
+    return this.find(requestData, selectionKeys)
+      .sort(sortingKey)
+      .skip(parseInt(offset))
+      .limit(parseInt(limit))
+      .exec();
   },
 });
 module.exports = mongoose.model("xin-user-address", UserAddressSchema);

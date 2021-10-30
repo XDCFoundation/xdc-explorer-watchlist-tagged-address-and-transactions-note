@@ -85,5 +85,30 @@ export default class Index {
       Utils.handleError(error, request, response);
     }
   }
-  
+
+  async getContentTagAddress(request, response) {
+    if (!request || !request.params)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try {
+      const [error, addUserResponse] = await Utils.parseResponse(
+        new Manager().getContentTagAddress(request.params)
+      );
+      if (error) {
+        return Utils.handleError(error, request, response);
+      }
+      return Utils.response(
+        response,
+        addUserResponse,
+        apiSuccessMessage.FETCH_SUCCESS,
+        httpConstants.RESPONSE_STATUS.SUCCESS,
+        httpConstants.RESPONSE_CODES.OK
+      );
+    } catch (error) {
+      Utils.handleError(error, request, response);
+    }
+  }
 }

@@ -29,6 +29,9 @@ tagSchema.static({
   },
   findDataWithAggregate: function (findObj) {
     return this.aggregate(findObj)
-  }
+  },
+  getFilteredData: function (requestData, selectionKeys, offset, limit, sortingKey) {
+    return this.find(requestData, selectionKeys).sort(sortingKey).skip(parseInt(offset)).limit(parseInt(limit)).exec();
+},
 })
 export default mongoose.model('xin-tag-address', tagSchema)
