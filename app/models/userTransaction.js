@@ -47,6 +47,10 @@ UserTransactionSchema.static({
         return this.findOneAndUpdate(findObj, updateObj, { new: true })
       },
 
+    getFilteredData: function (requestData, selectionKeys, offset, limit, sortingKey) {
+        return this.find(requestData, selectionKeys).sort(sortingKey).skip(parseInt(offset)).limit(parseInt(limit)).exec();
+    },
+
     getUserTransaction: function (
         findObj,
         selectionKey = "",

@@ -1,6 +1,7 @@
 import { apiFailureMessage, httpConstants} from "../../common/constants";
 import Utils from "../../utils";
 import UserTransactionSchema from "../../models/userTransaction"
+import TagAddressSchema from "../../models/tagAddress";
 export default class Manger {
     search = async (requestData) => {
         console.log(requestData)
@@ -8,8 +9,25 @@ export default class Manger {
 
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
-          let contentRequest =parseGetcontentRequest(requestData)
-          consoe.log("request",contentRequest)
+          if(requestData.search==1){
+            delete requestData.search           
+
+            let contentRequest =parseGetcontentRequest(requestData)       
+            
+            const contentList = await UserTransactionSchema.getFilteredData(contentRequest.requestData, contentRequest.selectionKeys, contentRequest.skip, contentRequest.limit, contentRequest.sortingKey);
+            console.log("request 1",contentRequest)
+            return contentList;
+          }
+          if (requestData.search==2){
+            delete requestData.search
+            let contentRequest =parseGetcontentRequest(requestData)
+
+            const contentList = await TagAddressSchema.getFilteredData(contentRequest.requestData, contentRequest.selectionKeys, contentRequest.skip, contentRequest.limit, contentRequest.sortingKey);
+            console.log("request 2",contentRequest)
+            return contentList;
+            
+          }
+        
 
         }catch (error) {
         throw error
