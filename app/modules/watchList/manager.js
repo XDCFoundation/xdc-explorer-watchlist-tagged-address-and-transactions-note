@@ -1,10 +1,6 @@
-import Utils from "../../utils/index";
+import Utils from "../../utils";
 import UserAddressSchema from "../../models/userAddressModel";
-import {
-  apiFailureMessage,
-  apiSuccessMessage,
-  httpConstants,
-} from "../../common/constants";
+import { apiFailureMessage, httpConstants } from "../../common/constants";
 
 const parseGetcontentRequest = (requestObj) => {
   if (!requestObj) return {};

@@ -1,4 +1,4 @@
-import Utils from "../../utils/index";
+import Utils from "../../utils";
 import BlManager from "./manager";
 import {
   apiFailureMessage,
@@ -8,6 +8,7 @@ import {
 
 export default class AddWatchList {
   async addWatchList(request, response) {
+    // Utils.lhtLog('addWatchList', `addWatchList request`, {request}, '', httpConstants.LOG_LEVEL_TYPE.INFO)
     if (!request || !request.body)
       throw Utils.error(
         {},
@@ -22,10 +23,10 @@ export default class AddWatchList {
         return Utils.handleError(error, request, response);
       }
 
-      Utils.response(
+      return Utils.response(
         response,
         addUserResponse,
-        apiSuccessMessage.USER_ADD_SUCCESS,
+        apiSuccessMessage.USER_GET_SUCCESS,
         httpConstants.RESPONSE_STATUS.SUCCESS,
         httpConstants.RESPONSE_CODES.OK
       );

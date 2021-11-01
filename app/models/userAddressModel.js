@@ -9,7 +9,7 @@ const UserAddressSchema = new Schema({
   balance: { type: Number, default: 0 },
   addedOn: { type: Number, default: Date.now() },
   notification: {
-    type: { type: String, default: "" },
+    type: { type: String, default: "", enum: [NO, INOUT, IN, OUT] },
     isEnabled: { type: Boolean, default: false },
   },
   isDeleted: { type: Boolean, default: false },

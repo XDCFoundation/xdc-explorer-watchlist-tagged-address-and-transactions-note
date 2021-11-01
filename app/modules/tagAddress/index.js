@@ -8,7 +8,7 @@ import Manager from "./manage";
 
 export default class Index {
   async addTagAddress(request, response) {
-    if (!request || !request.body)
+    if (!request || !request.body.userId || !request.body.address)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -24,12 +24,12 @@ export default class Index {
       return Utils.response(
         response,
         addUserResponse,
-        apiSuccessMessage.ADDRESS_TAG_ADD,
+        apiSuccessMessage.INFO_UPDATED,
         httpConstants.RESPONSE_STATUS.SUCCESS,
         httpConstants.RESPONSE_CODES.OK
       );
     } catch (error) {
-      throw error;
+      Utils.handleError(error, request, response);
     }
   }
 
@@ -41,6 +41,8 @@ export default class Index {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
+      console.log(request.params.userId);
+
       const [error, addUserResponse] = await Utils.parseResponse(
         new Manager().getTagAddress(request.params)
       );
@@ -50,7 +52,7 @@ export default class Index {
       return Utils.response(
         response,
         addUserResponse,
-        apiSuccessMessage.GET_ADDRESS_SUCCESS,
+        apiSuccessMessage.FETCH_SUCCESS,
         httpConstants.RESPONSE_STATUS.SUCCESS,
         httpConstants.RESPONSE_CODES.OK
       );
