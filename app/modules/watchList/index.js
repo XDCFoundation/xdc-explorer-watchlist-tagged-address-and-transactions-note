@@ -87,7 +87,7 @@ export default class AddWatchList {
   }
 
   async getContentWatchlist(request, response) {
-    if (!request || !request.params)
+    if (!request || !request.body)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -95,7 +95,7 @@ export default class AddWatchList {
       );
     try {
       const [error, addUserResponse] = await Utils.parseResponse(
-        new BlManager().getContentWatchlist(request.params)
+        new BlManager().getContentWatchlist(request.body)
       );
       if (error) {
         return Utils.handleError(error, request, response);

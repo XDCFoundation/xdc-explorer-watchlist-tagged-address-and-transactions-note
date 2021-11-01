@@ -5,7 +5,6 @@ import BLManager from "./manger";
 export default class Index {
   async addTransactionLabel(request, response) {
     // lhtWebLog('Inside testRoute', request.body, 'testRoute', 0, '')
-    console.log("string");
     const [error, getMetersRes] = await Utils.parseResponse(
       new BLManager().addTransactionLabel(request.body)
     );
@@ -22,7 +21,7 @@ export default class Index {
   }
 
   async getContentTxnLabel(request, response) {
-    if (!request || !request.params)
+    if (!request || !request.body)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -30,7 +29,7 @@ export default class Index {
       );
     try {
       const [error, addUserResponse] = await Utils.parseResponse(
-        new BLManager().getContentTxnLabel(request.params)
+        new BLManager().getContentTxnLabel(request.body)
       );
       if (error) {
         return Utils.handleError(error, request, response);

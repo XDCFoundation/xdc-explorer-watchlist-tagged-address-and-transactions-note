@@ -1,9 +1,12 @@
-import Utils from '../../utils'
-import { apiSuccessMessage, apiFailureMessage, httpConstants } from '../../common/constants'
-import Manager from './manage'
+import Utils from "../../utils";
+import {
+  apiSuccessMessage,
+  apiFailureMessage,
+  httpConstants,
+} from "../../common/constants";
+import Manager from "./manage";
 
 export default class Index {
- 
   async addTagAddress(request, response) {
     if (!request || !request.body)
       throw Utils.error(
@@ -26,20 +29,18 @@ export default class Index {
         httpConstants.RESPONSE_CODES.OK
       );
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   async getTagAddress(request, response) {
-    if (!request || !request.params || !request.params.userId )
+    if (!request || !request.params || !request.params.userId)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-      console.log(request.params.userId)
-
       const [error, addUserResponse] = await Utils.parseResponse(
         new Manager().getTagAddress(request.params)
       );
@@ -47,7 +48,6 @@ export default class Index {
         return Utils.handleError(error, request, response);
       }
       return Utils.response(
-        
         response,
         addUserResponse,
         apiSuccessMessage.GET_ADDRESS_SUCCESS,
@@ -67,7 +67,6 @@ export default class Index {
         httpConstants.RESPONSE_CODES.FORBIDDEN
       );
     try {
-
       const [error, addUserResponse] = await Utils.parseResponse(
         new Manager().editTagAddress(request.body)
       );
@@ -87,7 +86,7 @@ export default class Index {
   }
 
   async getContentTagAddress(request, response) {
-    if (!request || !request.params)
+    if (!request || !request.body)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -95,7 +94,7 @@ export default class Index {
       );
     try {
       const [error, addUserResponse] = await Utils.parseResponse(
-        new Manager().getContentTagAddress(request.params)
+        new Manager().getContentTagAddress(request.body)
       );
       if (error) {
         return Utils.handleError(error, request, response);

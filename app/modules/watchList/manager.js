@@ -102,10 +102,11 @@ export default class BlManager {
       if (request.description) {
         userDetail["description"] = request.description;
       }
-      return await UserAddressSchema.findAndUpdateData(
+      const editWatchlistData = await UserAddressSchema.findAndUpdateData(
         { _id: request._id },
         userDetail
       );
+      return editWatchlistData;
     } catch (err) {
       throw err;
     }

@@ -133,7 +133,7 @@ export default class Manger {
     try {
       let contentRequest = parseGetcontentRequest(request);
 
-      const watchlistContent = await TagAddressSchema.getFilteredData(
+      const tagAddressContent = await TagAddressSchema.getFilteredData(
         contentRequest.request,
         contentRequest.selectionKeys,
         contentRequest.skip,
@@ -143,7 +143,7 @@ export default class Manger {
 
       const listForLength = await TagAddressSchema.findData();
       let totalCount = listForLength ? listForLength.length : 0;
-      let response = { watchlistContent, totalCount };
+      let response = { tagAddressContent, totalCount };
       return response;
     } catch (err) {
       throw err;

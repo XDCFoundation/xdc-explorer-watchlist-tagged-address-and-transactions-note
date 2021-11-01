@@ -58,18 +58,15 @@ module.exports = (app) => {
     new TrxPvtModule().editTransactionPrivateNote
   );
 
-  app.get(
-    "/get-content-watchlist/:limit/:skip",
-    new AddWatchList().getContentWatchlist
-  );
+  app.post("/get-content-watchlist", new AddWatchList().getContentWatchlist);
 
-  app.get(
-    "/get-content-txn-label/:limit/:skip",
+  app.post(
+    "/get-content-txn-label",
     new AddTransactionLabel().getContentTxnLabel
   );
 
-  app.get(
-    "/get-content-tag-address/:limit/:skip",
+  app.post(
+    "/get-content-tag-address",
     new TaggedAddress().getContentTagAddress
   );
 };

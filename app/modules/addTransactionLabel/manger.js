@@ -54,7 +54,6 @@ const parseGetcontentRequest = (requestObj) => {
 
 export default class Manger {
   addTransactionLabel = async (requestData) => {
-    console.log(requestData);
     if (
       !requestData ||
       !requestData.userId ||
@@ -71,7 +70,6 @@ export default class Manger {
         transactionHash: requestData.transactionHash,
         userId: requestData.userId,
       });
-      // console.log("Tnx Hash",transactionHash)
 
       if (transactionHash) {
         throw Utils.error(
@@ -97,7 +95,7 @@ export default class Manger {
     try {
       let contentRequest = parseGetcontentRequest(request);
 
-      const watchlistContent = await UserTransactionSchema.getFilteredData(
+      const txnLabelContent = await UserTransactionSchema.getFilteredData(
         contentRequest.request,
         contentRequest.selectionKeys,
         contentRequest.skip,
@@ -109,7 +107,7 @@ export default class Manger {
 
       let totalCount = listForLength ? listForLength.length : 0;
 
-      let response = { watchlistContent, totalCount };
+      let response = { txnLabelContent, totalCount };
       return response;
     } catch (err) {
       throw err;
