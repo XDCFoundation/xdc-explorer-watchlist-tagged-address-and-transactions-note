@@ -8,14 +8,14 @@ const UserAddressSchema = new Schema({
   nameTag: { type: Number, default: "" },
   balance: { type: Number, default: 0 },
   addedOn: { type: Number, default: Date.now() },
-  notification: {
-    type: { type: String, default: "" },
-    isEnabled: { type: Boolean, default: false },
-  },
   isDeleted: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true },
   createdOn: { type: Number, default: Date.now() },
   modifiedOn: { type: Number, default: Date.now() },
+  notification: {
+    type: { type: String, default: "" },
+    isEnabled: { type: Boolean, default: false },
+  },
 });
 
 UserAddressSchema.method({
