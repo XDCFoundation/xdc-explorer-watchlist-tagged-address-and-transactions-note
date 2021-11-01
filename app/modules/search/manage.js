@@ -18,6 +18,8 @@ export default class Manger {
             console.log("request 1",contentRequest)
             return contentList;
           }
+
+          
           if (requestData.search==2){
             delete requestData.search
             let contentRequest =parseGetcontentRequest(requestData)
