@@ -1,5 +1,5 @@
 import Utils from "../../utils";
-import { apiSuccessMessage, httpConstants } from "../../common/constants";
+import {apiFailureMessage, apiSuccessMessage, httpConstants} from "../../common/constants";
 import BLManager from "./manger";
 
 export default class Index {
