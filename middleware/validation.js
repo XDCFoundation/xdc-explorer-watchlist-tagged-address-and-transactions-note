@@ -31,10 +31,34 @@ module.exports = {
     });
     await validate(schema, req.body, res, next);
   },
+  validateEditTagAddressLable: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string(),
+      address: yup.string(),
+      tagName: yup.string(),
+    });
+    await validate(schema, req.body, res, next);
+  },
   validateUserAddress: async (req, res, next) => {
     const schema = yup.object().shape({
       userId: yup.string().required(),
       address: yup.string().required(),
+    });
+    await validate(schema, req.body, res, next);
+  },
+  validateWatchList: async (req, res, next) => {
+    const schema = yup.object().shape({
+      // _id: yup.string().required(),
+      address: yup.string().required(),
+      description: yup.string().required(),
+    });
+    await validate(schema, req.body, res, next);
+  },
+  validateEditWatchList: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required(),
+      address: yup.string(),
+      description: yup.string(),
     });
     await validate(schema, req.body, res, next);
   },

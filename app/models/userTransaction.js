@@ -29,7 +29,11 @@ UserTransactionSchema.method({
 });
 
 UserTransactionSchema.static({
-    getUserTransaction: function (findQuery) {
+
+    findUserTransaction: function (findQuery) {
+        return this.find(findQuery);
+    }, 
+    findOneUserTransaction: function (findQuery) {
         return this.findOne(findQuery);
     },
 
@@ -59,6 +63,9 @@ UserTransactionSchema.static({
 
     bulkUpsert: function (bulkOps) {
         return this.bulkWrite(bulkOps);
+    },
+    getFilteredData: function (requestData, selectionKeys, offset, limit, sortingKey) {
+        return this.find(requestData, selectionKeys).sort(sortingKey).skip(parseInt(offset)).limit(parseInt(limit)).exec();
     },
 });
 

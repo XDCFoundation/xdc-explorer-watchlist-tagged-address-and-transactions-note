@@ -4,8 +4,8 @@ const tagSchema = new mongoose.Schema({
   userId: {type: String, default: ''},
   tagName: { type: String, default: '' },
   address: { type: String, default: '' },
-  addedOn: { type: Number, default: Date.now() },
-  modifiedOn: { type: Number, default: Date.now() }
+  addedOn: { type: Number, default: new Date() },
+  modifiedOn: { type: Number, default: new Date() }
 })
 
 tagSchema.method({
@@ -29,6 +29,9 @@ tagSchema.static({
   },
   findDataWithAggregate: function (findObj) {
     return this.aggregate(findObj)
-  }
+  },
+  getFilteredData: function (requestData, selectionKeys, offset, limit, sortingKey) {
+    return this.find(requestData, selectionKeys).sort(sortingKey).skip(parseInt(offset)).limit(parseInt(limit)).exec();
+},
 })
 export default mongoose.model('xin-tag-address', tagSchema)
