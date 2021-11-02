@@ -38,7 +38,7 @@ module.exports = (app) => {
     new AddWatchList().addWatchList
   );
 
-  app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
+  app.get("/getAddress/:userId", new AddWatchList().getAddressByUserId);
 
   app.put(
     "/edit-address-tag",
