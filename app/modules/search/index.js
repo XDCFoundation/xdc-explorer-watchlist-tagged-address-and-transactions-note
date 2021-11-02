@@ -4,7 +4,7 @@ import BLManager from "./searchManager";
 
 export default class Index {
   async searchData(request, response) {
-    if (!request )
+    if (!request || !request.body)
       throw Utils.error(
         {},
         apiFailureMessage.INVALID_PARAMS,
@@ -14,15 +14,15 @@ export default class Index {
       
     //   lhtWebLog("Inside SearchRoute ", request.body, "searchRoute", 0, "");
 
-      const [error, getMetersRes] = await Utils.parseResponse(
+      const [error, getResponse] = await Utils.parseResponse(
         new BLManager().search(request.body)
       );
-      if (!getMetersRes) {
+      if (!getResponse) {
         return Utils.handleError(error, request, response);
       }
       return Utils.response(
         response,
-        getMetersRes,
+        getResponse,
         apiSuccessMessage.FETCH_SUCCESS,
         httpConstants.RESPONSE_STATUS.SUCCESS,
         httpConstants.RESPONSE_CODES.OK

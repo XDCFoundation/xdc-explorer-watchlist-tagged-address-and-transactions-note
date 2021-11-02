@@ -5,7 +5,7 @@ import TagAddressSchema from "../../models/tagAddress";
 import UserAddressSchema from "../../models/userAddressModel";
 import Utility from "../../utils";
 export default class Manger {
-    
+
     search = async (requestData) => {
         console.log(requestData)
         if (!requestData || !requestData.userId )
@@ -14,9 +14,12 @@ export default class Manger {
 
         try {
 
-            if(requestData.search==1)
+            const search =requestData.search
+            delete requestData.search
+
+            if(search==1)
             {
-                delete requestData.search
+                
 
                 let contentRequest = Utility.parseGetContentRequest(requestData)
                 const contentList = await UserAddressSchema.getFilteredData(contentRequest.requestData, contentRequest.selectionKeys, contentRequest.skip, contentRequest.limit, contentRequest.sortingKey);
@@ -24,9 +27,9 @@ export default class Manger {
                 return contentList;
             }
 
-            if(requestData.search==2)
+            if(search==2)
             {
-                delete requestData.search
+                // delete requestData.search
 
                 let contentRequest = Utility.parseGetContentRequest(requestData)
                 const contentList = await UserTransactionSchema.getFilteredData(contentRequest.requestData, contentRequest.selectionKeys, contentRequest.skip, contentRequest.limit, contentRequest.sortingKey);
@@ -34,9 +37,9 @@ export default class Manger {
                 return contentList;
             }
 
-            if (requestData.search==3)
+            if (search==3)
             {
-                delete requestData.search
+                // delete requestData.search
                 let contentRequest = Utility.parseGetContentRequest(requestData)
                 const contentList = await TagAddressSchema.getFilteredData(contentRequest.requestData, contentRequest.selectionKeys, contentRequest.skip, contentRequest.limit, contentRequest.sortingKey);
                 // console.log("request 3",contentRequest)
