@@ -20,13 +20,13 @@ export default class BlManager {
     }
   };
 
-  editWatchList = async ({UserId, address, description, balance, notification}) => {
+  editWatchList = async ({userId, address, description, balance, notification}) => {
     try {
-      let userDetail = await UserAddressSchema.findOne({ UserId });
+      let userDetail = await UserAddressSchema.findOne({ userId });
       if (!userDetail) {
         throw apiFailureMessage.USER_NOT_EXISTS
       }
-      return await UserAddressSchema.updateOne({UserId, address, description, balance, notification})
+      return await UserAddressSchema.updateOne({userId, address, description, balance, notification})
 
     } catch (err) {
       throw err;
@@ -37,7 +37,7 @@ export default class BlManager {
     if (!requestData)
         throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
 
-    return await UserAddressSchema.find({ isActive: true, isDeleted: false, UserId: requestData.UserId })
+    return await UserAddressSchema.find({ isActive: true, isDeleted: false, userId: requestData.userId })
 
   }
 }

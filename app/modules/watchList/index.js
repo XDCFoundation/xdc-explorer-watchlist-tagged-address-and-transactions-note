@@ -39,7 +39,7 @@ export default class AddWatchList {
     }
 
     async getAddressByUserId(request, response) {
-        if (!request || !request.params || !request.params.UserId)
+        if (!request || !request.params || !request.params.userId)
             throw Utils.error({}, apiFailureMessage.INVALID_PARAMS, httpConstants.RESPONSE_CODES.FORBIDDEN);
         try {
             const [error, addUserResponse] = await Utils.parseResponse(new BlManager().getAddressByUserId(request.params));

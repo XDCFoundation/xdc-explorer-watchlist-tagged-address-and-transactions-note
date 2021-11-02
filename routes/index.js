@@ -24,7 +24,7 @@ module.exports = (app) => {
     app.get("/get-address-tag/:userId",  new TaggedAddress().getTagAddress);
     
     app.post('/addWatchList', new AddWatchList().addWatchList);
-    app.get("/getAddress/:UserId", new AddWatchList().getAddressByUserId);
+    app.get("/getAddress/:userId", new AddWatchList().getAddressByUserId);
 
     app.get("/notify-user", ValidationManger.validateUserAddress, new NotifyUser().notifyUser);
     
