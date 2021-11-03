@@ -1,7 +1,7 @@
 
 import Config from "../../../config";
 import { amqpConstants, genericConstants, httpConstants } from "../../common/constants";
-import UserAddressModel from "../../models/userAddressModel";
+import UserAddressModel from "../../models/UserWhitelistAddress";
 import Utils from "../../utils";
 import RabbitMqController from "../queue/index";
 
@@ -15,6 +15,7 @@ export default class BlockManager {
                     "notification.isEnabled": true,
                     "notification.type": { $in: ["INOUT", "IN", "OUT"] }
                 });
+          
             Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
         } catch (err) {
@@ -34,7 +35,7 @@ export default class BlockManager {
                 }
             });
             newTransactions.on("data", (blockHeader) => {
-                Utils.lhtLog("listenAddresses", "getNewBlockHeaders onData", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                Utils.lhtLog("listenAddresses", "getNewBlockHeaders onData", blockHeader, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
                 web3.eth.getBlock(blockHeader.hash, true, async (error, blockData) => {
                     // console.log(blockData, "block");
