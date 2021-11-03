@@ -4,7 +4,7 @@ import {
   httpConstants,
 } from "../../common/constants";
 import Utils from "../../utils";
-import UserTransactionSchema from "../../models/userTransaction";
+import UserTransactionSchema from "../../models/UserTransaction";
 
 const parseGetcontentRequest = (requestObj) => {
   if (!requestObj) return {};

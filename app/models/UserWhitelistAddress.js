@@ -1,15 +1,15 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-const UserAddressSchema = new Schema({
+const WhitelistAddressSchema = new Schema({
   address: { type: String, default: "" },
   userId: { type: String, default: "" },
   description: { type: String, default: "" },
-  nameTag: { type: Number, default: "" },
+  tagName: { type: String, default: '' },
   balance: { type: Number, default: 0 },
   addedOn: { type: Number, default: Date.now() },
   notification: {
-    type: { type: String, default: "", enum: ["NO", "INOUT", "IN", "OUT"] },
+    type: { type: String, default: ""  },
     isEnabled: { type: Boolean, default: false },
   },
   isDeleted: { type: Boolean, default: false },
@@ -18,12 +18,13 @@ const UserAddressSchema = new Schema({
   modifiedOn: { type: Number, default: Date.now() },
 });
 
-UserAddressSchema.method({
+WhitelistAddressSchema.method({
   saveData: async function () {
     return await this.save();
   },
 });
-UserAddressSchema.static({
+
+WhitelistAddressSchema.static({
   getUserAddress: function (findQuery) {
     return this.findOne(findQuery);
   },
@@ -34,14 +35,24 @@ UserAddressSchema.static({
   findAndUpdateData: function (findObj, updateObj) {
     return this.findOneAndUpdate(findObj, updateObj, { new: true });
   },
+  findOneAndUpdateData: function (findObj, updateObj) {
+    return this.findOneAndUpdate(findObj, updateObj, {
+      upsert: true,
+      new: true,
+      setDefaultsOnInsert: true
+    })
+  },
+  findOneData: function (findObj) {
+    return this.findOne(findObj)
+  },
+  findDataWithAggregate: function (findObj) {
+    return this.aggregate(findObj)
+  },
   updateUserAddress: function (findObj, updateObj) {
     return this.findOneAndUpdate(findObj, updateObj, {
       returnNewDocument: true,
     });
   },
-  //   updateUserAddress: function (findObj, updateObj) {
-  //     return this.updateMany(findObj, updateObj);
-  //   },
   bulkUpsert: function (bulkOps) {
     return this.bulkWrite(bulkOps);
   },
@@ -59,4 +70,4 @@ UserAddressSchema.static({
       .exec();
   },
 });
-module.exports = mongoose.model("xin-user-address", UserAddressSchema);
+module.exports = mongoose.model("xin-user-whitelist-address", WhitelistAddressSchema);
