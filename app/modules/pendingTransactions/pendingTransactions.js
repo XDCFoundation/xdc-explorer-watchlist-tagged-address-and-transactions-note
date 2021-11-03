@@ -8,7 +8,7 @@ import RabbitMqController from "../queue/index";
 
 let newTransactions, userAddresses;
 export default class BlockManager {
-    async syncTransactions(socket) {
+    async syncTransactions() {
         try {
             userAddresses = await UserAddressModel.getFilteredData(
                 {
@@ -19,8 +19,8 @@ export default class BlockManager {
             Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
         } catch (err) {
-            Utils.lhtLog("syncTransactions", `catch block error: ${error}`, error, "kajalB", httpConstants.LOG_LEVEL_TYPE.ERROR)
-            throw error;
+            Utils.lhtLog("syncTransactions", `catch block error: ${err}`, err, "kajalB", httpConstants.LOG_LEVEL_TYPE.ERROR)
+            throw err;
         }
     }
 
