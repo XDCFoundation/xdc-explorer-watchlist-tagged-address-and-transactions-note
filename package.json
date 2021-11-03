@@ -4,7 +4,7 @@
   "description": "This is user-transaction microservices in node.js.",
   "main": "server.js",
   "scripts": {
-    "start": "node ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
+    "start": "./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
     "test": "forever ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js",
     "nodemon": "nodemon ./node_modules/babel-cli/bin/babel-node.js --presets node8 ./server.js"
   },
