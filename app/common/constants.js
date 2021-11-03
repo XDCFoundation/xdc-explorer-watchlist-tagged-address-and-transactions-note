@@ -94,7 +94,7 @@ export const apiFailureMessage = {
 }
 
 export const SearchData = {
-  WATCHLIST: '1',
+  WATCHLIST: '0',
   TRANSACTION_NOTE:"1",
   TAG_ADDRESS:"2"
 
