@@ -15,7 +15,7 @@ global.lhtWebLog = Utils.lhtLog
 
 class Server {
   static listen () {
-    Promise.all([AMQP.conn(Config.AMQP_HOST_URL, true)]).then(async() => {
+    Promise.all([DBConnection.connect(),AMQP.conn(Config.AMQP_HOST_URL, true)]).then(async() => {
       app.listen(Config.PORT)
       Utils.lhtLog('listen', `Server Started on port ${Config.PORT}`, {}, 'AyushK', httpConstants.LOG_LEVEL_TYPE.INFO)
       routes(app)
