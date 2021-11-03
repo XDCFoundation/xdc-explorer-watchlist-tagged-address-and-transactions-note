@@ -1,4 +1,4 @@
-import { apiFailureMessage, httpConstants } from "../../common/constants";
+import { apiFailureMessage, httpConstants,SearchData } from "../../common/constants";
 import Utils from "../../utils";
 import UserTransactionSchema from "../../models/UserTransaction";
 import TagAddressSchema from "../../models/UserWhitelistAddress";
@@ -18,7 +18,7 @@ export default class Manger {
       const searchTable = requestData.search;
       delete requestData.search;
 
-      if (search == 0) {
+      if (searchTable === SearchData.WATCHLIST) {
         let contentRequest = Utility.parseGetContentRequest(requestData);
         const contentList = await UserAddressSchema.getFilteredData(
           contentRequest.requestData,
@@ -31,7 +31,7 @@ export default class Manger {
         return contentList;
       }
 
-      if (search == 1) {
+      if (searchTable === SearchData.TRANSACTION_NOTE) {
         let contentRequest = Utility.parseGetContentRequest(requestData);
         const contentList = await UserTransactionSchema.getFilteredData(
           contentRequest.requestData,
@@ -44,7 +44,7 @@ export default class Manger {
         return contentList;
       }
 
-      if (search == 2) {
+      if (searchTable === SearchData.TAG_ADDRESS) {
         let contentRequest = Utility.parseGetContentRequest(requestData);
         const contentList = await TagAddressSchema.getFilteredData(
           contentRequest.requestData,

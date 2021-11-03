@@ -92,3 +92,10 @@ export const apiFailureMessage = {
   SESSION_GENERATION: 'Unable to generate session!',
   SESSION_EXPIRED: 'Session Expired!'
 }
+
+export const SearchData = {
+  WATCHLIST: '1',
+  TRANSACTION_NOTE:"1",
+  TAG_ADDRESS:"2"
+
+}
