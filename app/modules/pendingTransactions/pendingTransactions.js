@@ -25,7 +25,6 @@ export default class BlockManager {
     }
 
     async listenAddresses() {
-        console.log("useraddress", userAddresses);
         try {
             newTransactions = web3.eth.subscribe("newBlockHeaders", (error, result) => {
                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders listener startes", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
@@ -38,7 +37,6 @@ export default class BlockManager {
                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders onData", blockHeader, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
                 web3.eth.getBlock(blockHeader.hash, true, async (error, blockData) => {
-                    // console.log(blockData, "block");
                     Utils.lhtLog("listenAddresses", "getNewBlockHeaders getBlock", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                     if (!blockData)
                         return;
@@ -50,7 +48,6 @@ export default class BlockManager {
                                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders getTransactionReceipt", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                                 if (!transactionReceipt || transactionReceipt.status === false)
                                     return;
-                                // console.log("trann",transaction);
                                 let userAddress = userAddresses && userAddresses.find((userAddress) => {
                                     if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) return userAddress
                                 })
@@ -58,7 +55,6 @@ export default class BlockManager {
                                 if (userAddress) {
 
                                     if (userAddress.notification.type === "INOUT" && (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase())) {
-                                        console.log("INOUT");
                                         let transactionType = "";
                                         if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) transactionType = genericConstants.TRANSACTION_TYPES.SENT
                                         else
@@ -66,12 +62,10 @@ export default class BlockManager {
                                         await sendDataToQueue("INOUT", transactionReceipt, userAddress, transactionType, blockData, transaction.value);
                                     }
                                     else if (userAddress.notification.type === "IN" && userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) {
-                                        console.log("IN");
                                         await sendDataToQueue("IN", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.RECEIVED, blockData, transaction.value);
 
                                     }
                                     else if (userAddress.notification.type === "OUT" && userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) {
-                                        console.log("OUT");
                                         await sendDataToQueue("OUT", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.SENT, blockData, transaction.value);
                                     }
                                 }
@@ -120,10 +114,9 @@ const getMailNotificationResponse = (type, transaction, userAddress, transaction
     }
 }
 const sendDataToQueue = async (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
-    console.log("send data to queue-----------");
+
     let notificationRes = getNotificatonResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
     let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
-    console.log("mmm", mailNotificationRes);
     let rabbitMqController = new RabbitMqController();
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));

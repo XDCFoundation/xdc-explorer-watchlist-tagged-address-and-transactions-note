@@ -25,7 +25,6 @@ class Server {
       new QueueController().initializeRabbitMQListener();
 
     }).catch(error =>{
-      console.log("error",error);
       global.web3 = WebSocketService.webSocketConnection(Config.WS_URL);
       Utils.lhtLog('listen', 'failed to connect', { err: error }, 'AyushK', httpConstants.LOG_LEVEL_TYPE.ERROR)
      } )

@@ -29,7 +29,6 @@ WhitelistAddressSchema.static({
     return this.findOne(findQuery);
   },
   findData: function (findObj) {
-    console.log("find Obj", findObj);
     return this.find(findObj);
   },
   findAndUpdateData: function (findObj, updateObj) {
