@@ -72,4 +72,5 @@ UserTransactionSchema.static({
 module.exports = mongoose.model(
     "xin-user-transaction-notes",
     UserTransactionSchema
-);
+
+    );
