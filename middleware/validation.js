@@ -23,7 +23,7 @@ module.exports = {
     });
     await validate(schema, req.body, res, next);
   },
-  validateTagAddressLable: async (req, res, next) => {
+  validateTagAddress: async (req, res, next) => {
     const schema = yup.object().shape({
       userId: yup.string().required(),
       address: yup.string().required(),

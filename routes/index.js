@@ -19,12 +19,10 @@ module.exports = (app) => {
 
   app.post("/add-transaction-label",ValidationManger.validateTransactionLable,new AddTransactionLabel().addTransactionLabel);
 
-  app.post("/add-address-tag",ValidationManger.validateTagAddressLable,new TaggedAddress().addTagAddress);
-
+  app.post("/add-address-tag",ValidationManger.validateTagAddress,new TaggedAddress().addTagAddress);
   app.get("/get-address-tag/:userId", new TaggedAddress().getTagAddress);
 
   app.post("/add-watchlist", ValidationManger.validateWatchList, new AddWatchList().addWatchList );
-
   app.get("/getAddress/:userId", new AddWatchList().getAddressByUserId);
 
   app.put("/edit-address-tag", ValidationManger.validateEditTagAddressLable, new TaggedAddress().editTagAddress );

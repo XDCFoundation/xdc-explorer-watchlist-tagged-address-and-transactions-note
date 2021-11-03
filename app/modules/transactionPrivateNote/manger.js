@@ -2,7 +2,7 @@ import {
   apiFailureMessage,
   httpConstants,
 } from "../../common/constants";
-import UserTransactionSchema from "../../models/userTransaction";
+import UserTransactionSchema from "../../models/UserTransaction";
 import Utils from "../../utils";
 
 export default class Manger {

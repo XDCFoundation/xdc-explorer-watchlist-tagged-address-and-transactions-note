@@ -1,5 +1,5 @@
 import Utils from "../../utils";
-import UserAddressSchema from "../../models/userAddressModel";
+import UserAddressSchema from "../../models/UserWhitelistAddress";
 import { apiFailureMessage, httpConstants } from "../../common/constants";
 
 const parseGetcontentRequest = (requestObj) => {

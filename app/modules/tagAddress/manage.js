@@ -4,7 +4,7 @@ import {
   httpConstants,
 } from "../../common/constants";
 import Utils from "../../utils";
-import TagAddressSchema from "../../models/tagAddress";
+import TagAddressSchema from "../../models/UserWhitelistAddress";
 
 const parseGetcontentRequest = (requestObj) => {
   if (!requestObj) return {};
