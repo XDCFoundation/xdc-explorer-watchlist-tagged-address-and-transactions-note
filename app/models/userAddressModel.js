@@ -9,7 +9,7 @@ const UserAddressSchema = new Schema({
   balance: { type: Number, default: 0 },
   addedOn: { type: Number, default: Date.now() },
   notification: {
-    type: { type: String, default: "", enum: [NO, INOUT, IN, OUT] },
+    type: { type: String, default: "", enum: ["NO", "INOUT", "IN", "OUT"] },
     isEnabled: { type: Boolean, default: false },
   },
   isDeleted: { type: Boolean, default: false },
@@ -28,6 +28,7 @@ UserAddressSchema.static({
     return this.findOne(findQuery);
   },
   findData: function (findObj) {
+    console.log("find Obj", findObj);
     return this.find(findObj);
   },
   findAndUpdateData: function (findObj, updateObj) {
