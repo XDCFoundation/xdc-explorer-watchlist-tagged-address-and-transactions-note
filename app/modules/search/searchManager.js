@@ -6,7 +6,6 @@ import UserAddressSchema from "../../models/UserWhitelistAddress";
 import Utility from "../../utils";
 export default class Manger {
   search = async (requestData) => {
-    console.log(requestData);
     if (!requestData || !requestData.userId)
       throw Utils.error(
         {},

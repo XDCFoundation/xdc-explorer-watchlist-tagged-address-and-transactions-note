@@ -7,4 +7,9 @@ export default class JobController {
       lhtWebLog('monitorMeter', 'Job Failed', err, 'developer', httpConstants.LOG_LEVEL_TYPE.ERROR)
     )
   }
+  static async handleWatchlistTransactions(){
+    lhtWebLog("cron starts", "", "handleWatchlistTransactions", "", "Kajal", httpConstants.LOG_LEVEL_TYPE.FUNCTIONAL)
+    let handleWatchlistTransactionsResponse = BLManager.handleWatchlistTransactions();
+    lhtWebLog("cron ends", "", "handleWatchlistTransactions", "", "Kajal", httpConstants.LOG_LEVEL_TYPE.FUNCTIONAL)
+}
 }
