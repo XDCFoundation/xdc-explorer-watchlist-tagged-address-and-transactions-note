@@ -4,7 +4,7 @@ import Utils from './app/utils'
 import Config from './config'
 import routes from './routes'
 import { httpConstants } from './app/common/constants'
-import WebSocketService from "./app/service/WebsocketService";
+import WebSocketService from "./app/service/webSocketService";
 import QueueController from "./app/modules/queue";
 import AMQP from "./library";
 import ListenTransactions from "./app/modules/pendingTransactions"

@@ -133,7 +133,7 @@ export const amqpConstants = {
   AMQP_PAYLOAD_TYPE: {}
 };
 export const SearchData = {
-  WATCHLIST: '1',
+  WATCHLIST: '0',
   TRANSACTION_NOTE:"1",
   TAG_ADDRESS:"2"
 
