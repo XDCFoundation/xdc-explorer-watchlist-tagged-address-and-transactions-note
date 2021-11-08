@@ -90,15 +90,20 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
     return {
         "title": "Watchlist Address",
         "description": `${transactionValue} xdc  ${transactionType} ${userAddress.description}`,
+        "postedTo": userAddress.userId,
+        "postedBy": 'Xinfin Explorer',
         "timestamp": blockData.timestamp,
-        "userId": userAddress.userId,
+        "userID": userAddress.userId,
         "addedOn": Date.now(),
         "type": genericConstants.NOTIFICATION_TYPE.PUSH,
         "getDeviceQueryObj": { user: userAddress.userId },
+        "payload":  { user: userAddress.userId },
         "isSendPush": true
 
     }
 }
+
+
 const getMailNotificationResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
     return {
         "title": "Watchlist Address",
