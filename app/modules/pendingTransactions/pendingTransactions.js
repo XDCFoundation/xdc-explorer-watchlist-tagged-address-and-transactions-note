@@ -53,7 +53,7 @@ export default class BlockManager {
                                 })
 
                                 if (userAddress) {
-
+                                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {userAddress, transaction}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                                     if (userAddress.notification.type === "INOUT" && (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase())) {
                                         let transactionType = "";
                                         if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) transactionType = genericConstants.TRANSACTION_TYPES.SENT
@@ -87,6 +87,8 @@ export default class BlockManager {
 }
 
 const getNotificatonResponse = (type, transaction, userAddress, transactionType, blockData,transactionValue) => {
+    Utils.lhtLog("getNotificatonResponse", "getNotificatonResponse", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+
     return {
         "title": "Watchlist Address",
         "description": `${transactionValue} xdc  ${transactionType} ${userAddress.description}`,
@@ -124,6 +126,7 @@ const sendDataToQueue = async (type, transaction, userAddress, transactionType, 
     console.log("notificationRes",notificationRes);
     let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
     let rabbitMqController = new RabbitMqController();
+    Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
     // await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
 
