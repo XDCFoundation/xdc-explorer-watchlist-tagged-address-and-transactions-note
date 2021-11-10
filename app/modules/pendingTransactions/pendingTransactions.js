@@ -99,7 +99,7 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
         "addedOn": Date.now(),
         "type": genericConstants.NOTIFICATION_TYPE.PUSH,
         "getDeviceQueryObj": { user: userAddress.userId },
-        "payload":  { user: userAddress.userId },
+        "payload":  { user: userAddress.userId , timestamp: blockData.timestamp,},
         "isSendPush": true
 
     }
