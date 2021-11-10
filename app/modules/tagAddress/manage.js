@@ -76,6 +76,20 @@ export default class Manger {
         }
     };
 
+    getUserAddressTagUsingHash = async (reqObj) => {
+        try {
+            return await TagAddressSchema.find({
+                userId:reqObj.userId,
+                address:reqObj.address,
+                isTaggedAddress: true,
+                isActive: true,
+                isDeleted: false
+            });
+        } catch (error) {
+            throw error;
+        }
+    };
+
 
     parseTagAddressData(requestObj) {
         let tagAddressObj = new TagAddressSchema(requestObj);

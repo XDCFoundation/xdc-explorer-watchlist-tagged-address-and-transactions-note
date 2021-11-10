@@ -1,5 +1,5 @@
 import Utils from "../../utils";
-import { apiSuccessMessage, httpConstants } from "../../common/constants";
+import {apiFailureMessage, apiSuccessMessage, httpConstants} from "../../common/constants";
 import BLManager from "./manger";
 
 export default class Index {
@@ -19,6 +19,33 @@ export default class Index {
       httpConstants.RESPONSE_CODES.OK
     );
   }
+
+  async getTransactionPrivateNoteUsingHash(request, response) {
+    if (!request || !request.body.userId || !request.body.transactionHash)
+      throw Utils.error(
+          {},
+          apiFailureMessage.INVALID_PARAMS,
+          httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try {
+      const [error, addUserResponse] = await Utils.parseResponse(
+          new BLManager().getTransactionPrivateNoteUsingHash(request.body)
+      );
+      if (error) {
+        return Utils.handleError(error, request, response);
+      }
+      return Utils.response(
+          response,
+          addUserResponse,
+          apiSuccessMessage.INFO_UPDATED,
+          httpConstants.RESPONSE_STATUS.SUCCESS,
+          httpConstants.RESPONSE_CODES.OK
+      );
+    } catch (error) {
+      Utils.handleError(error, request, response);
+    }
+  }
+
 
   async getContentTxnLabel(request, response) {
     if (!request || !request.body)

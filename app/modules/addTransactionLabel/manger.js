@@ -85,6 +85,22 @@ export default class Manger {
     }
   };
 
+
+  getTransactionPrivateNoteUsingHash = async ({reqObj}) => {
+    try {
+      return await UserTransactionSchema.find({
+        userId: reqObj.userId,
+        transactionHash: reqObj.transactionHash,
+        isTaggedAddress: true,
+        isActive: true,
+        isDeleted: false
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+
   async getContentTxnLabel(request) {
     if (!request)
       throw Utils.error(
