@@ -15,7 +15,7 @@ const UserTransactionSchema = new Schema({
 
     isDeleted: { type: Boolean, default: false },
 
-    isActive: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: true },
 
     createdOn: { type: Number, default: Date.now() },
 

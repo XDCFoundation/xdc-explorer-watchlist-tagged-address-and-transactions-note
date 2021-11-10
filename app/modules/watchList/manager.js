@@ -169,14 +169,13 @@ export default class BlManager {
             let contentRequest = parseGetcontentRequest(request);
 
             const watchlistContent = await UserAddressSchema.getFilteredData(
-                contentRequest.request,
+                contentRequest.requestData,
                 contentRequest.selectionKeys,
                 contentRequest.skip,
                 contentRequest.limit,
                 contentRequest.sortingKey
             );
-            const listForLength = await UserAddressSchema.findData();
-            let totalCount = listForLength ? listForLength.length : 0;
+            let totalCount = watchlistContent ? watchlistContent.length : 0;
             let response = {watchlistContent, totalCount};
             return response;
         } catch (err) {

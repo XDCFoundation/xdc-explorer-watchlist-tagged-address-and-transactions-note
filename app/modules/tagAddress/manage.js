@@ -175,17 +175,15 @@ export default class Manger {
             let contentRequest = parseGetcontentRequest(request);
 
             const tagAddressContent = await TagAddressSchema.getFilteredData(
-                contentRequest.request,
+                contentRequest.requestData,
                 contentRequest.selectionKeys,
                 contentRequest.skip,
                 contentRequest.limit,
                 contentRequest.sortingKey
             );
 
-            const listForLength = await TagAddressSchema.findData();
-            let totalCount = listForLength ? listForLength.length : 0;
-            let response = {tagAddressContent, totalCount};
-            return response;
+            let totalCount = tagAddressContent ? tagAddressContent.length : 0;
+            return {tagAddressContent, totalCount};
         } catch (err) {
             throw err;
         }
