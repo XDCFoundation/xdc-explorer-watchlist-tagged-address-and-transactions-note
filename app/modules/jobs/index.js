@@ -10,6 +10,6 @@ export default class JobController {
   static async handleWatchlistTransactions(){
     lhtWebLog("cron starts", "", "handleWatchlistTransactions", "", "Kajal", httpConstants.LOG_LEVEL_TYPE.FUNCTIONAL)
     let handleWatchlistTransactionsResponse = BLManager.handleWatchlistTransactions();
-    lhtWebLog("cron ends", "", "handleWatchlistTransactions", "", "Kajal", httpConstants.LOG_LEVEL_TYPE.FUNCTIONAL)
+    lhtWebLog("cron ends", "", "handleWatchlistTransactions ends", "", "Kajal", httpConstants.LOG_LEVEL_TYPE.FUNCTIONAL)
 }
 }
