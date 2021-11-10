@@ -51,6 +51,7 @@ module.exports = {
       // _id: yup.string().required(),
       address: yup.string().required(),
       description: yup.string().required(),
+      userId: yup.string().required(),
     });
     await validate(schema, req.body, res, next);
   },

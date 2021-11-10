@@ -1,6 +1,5 @@
-
 import Config from "../../../config";
-import { amqpConstants, genericConstants, httpConstants } from "../../common/constants";
+import {amqpConstants, genericConstants, httpConstants} from "../../common/constants";
 import UserAddressModel from "../../models/UserWhitelistAddress";
 import Utils from "../../utils";
 import RabbitMqController from "../queue/index";
@@ -10,12 +9,13 @@ let newTransactions, userAddresses;
 export default class BlockManager {
     async syncTransactions() {
         try {
+            userAddresses = {};
             userAddresses = await UserAddressModel.getFilteredData(
                 {
                     "notification.isEnabled": true,
-                    "notification.type": { $in: ["INOUT", "IN", "OUT"] }
+                    "notification.type": {$in: ["INOUT", "IN", "OUT"]}
                 });
-          
+
             Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
         } catch (err) {
@@ -53,19 +53,20 @@ export default class BlockManager {
                                 })
 
                                 if (userAddress) {
-                                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {userAddress, transaction}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {
+                                        userAddress,
+                                        transaction
+                                    }, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                                     if (userAddress.notification.type === "INOUT" && (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase())) {
                                         let transactionType = "";
                                         if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) transactionType = genericConstants.TRANSACTION_TYPES.SENT
                                         else
                                             transactionType = genericConstants.TRANSACTION_TYPES.RECEIVED
                                         await sendDataToQueue("INOUT", transactionReceipt, userAddress, transactionType, blockData, transaction.value);
-                                    }
-                                    else if (userAddress.notification.type === "IN" && userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) {
+                                    } else if (userAddress.notification.type === "IN" && userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) {
                                         await sendDataToQueue("IN", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.RECEIVED, blockData, transaction.value);
 
-                                    }
-                                    else if (userAddress.notification.type === "OUT" && userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) {
+                                    } else if (userAddress.notification.type === "OUT" && userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) {
                                         await sendDataToQueue("OUT", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.SENT, blockData, transaction.value);
                                     }
                                 }
@@ -86,7 +87,7 @@ export default class BlockManager {
     }
 }
 
-const getNotificatonResponse = (type, transaction, userAddress, transactionType, blockData,transactionValue) => {
+const getNotificatonResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
     Utils.lhtLog("getNotificatonResponse", "getNotificatonResponse", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
     return {
@@ -98,8 +99,8 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
         "userID": userAddress.userId,
         "addedOn": Date.now(),
         "type": genericConstants.NOTIFICATION_TYPE.PUSH,
-        "getDeviceQueryObj": { user: userAddress.userId },
-        "payload":  { user: userAddress.userId },
+        "getDeviceQueryObj": {user: userAddress.userId},
+        "payload": {user: userAddress.userId},
         "isSendPush": true
 
     }
@@ -123,7 +124,7 @@ const getMailNotificationResponse = (type, transaction, userAddress, transaction
 const sendDataToQueue = async (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
 
     let notificationRes = getNotificatonResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
-    console.log("notificationRes",notificationRes);
+    console.log("notificationRes", notificationRes);
     let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
     let rabbitMqController = new RabbitMqController();
     Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
