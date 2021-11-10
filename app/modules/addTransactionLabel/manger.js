@@ -86,7 +86,7 @@ export default class Manger {
   };
 
 
-  getTransactionPrivateNoteUsingHash = async ({reqObj}) => {
+  getTransactionPrivateNoteUsingHash = async (reqObj) => {
     try {
       return await UserTransactionSchema.find({
         userId: reqObj.userId,
