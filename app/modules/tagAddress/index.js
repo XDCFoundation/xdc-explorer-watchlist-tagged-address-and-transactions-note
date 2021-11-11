@@ -33,6 +33,32 @@ export default class Index {
     }
   }
 
+    async getUserAddressTagUsingHash(request, response) {
+        if (!request || !request.body.userId || !request.body.address)
+            throw Utils.error(
+                {},
+                apiFailureMessage.INVALID_PARAMS,
+                httpConstants.RESPONSE_CODES.FORBIDDEN
+            );
+        try {
+            const [error, addUserResponse] = await Utils.parseResponse(
+                new Manager().getUserAddressTagUsingHash(request.body)
+            );
+            if (error) {
+                return Utils.handleError(error, request, response);
+            }
+            return Utils.response(
+                response,
+                addUserResponse,
+                apiSuccessMessage.INFO_UPDATED,
+                httpConstants.RESPONSE_STATUS.SUCCESS,
+                httpConstants.RESPONSE_CODES.OK
+            );
+        } catch (error) {
+            Utils.handleError(error, request, response);
+        }
+    }
+
   async getTagAddress(request, response) {
     if (!request || !request.params || !request.params.userId)
       throw Utils.error(
