@@ -110,14 +110,15 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
 const getMailNotificationResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
     return {
         "title": "Watchlist Address",
-        "description": `${transactionValue} xdc ${transactionType} ${userAddress.description}`,
+        "description": `<html><head>Welcome to Xinfin Explorer</head><body><h1>${transactionValue} xdc  ${transactionType} ${userAddress.description}</h1></body></html>`,
         "timestamp": blockData.timestamp,
-        "userId": userAddress.userId,
-        "postedBy": Config.POSTED_BY,
-        "postedTo": Config.POSTED_TO,
+        "userID": userAddress.userId,
+        "postedTo": userAddress.userId,
+        "postedBy": 'Xinfin Explorer',
+        "payload":  { user: userAddress.userId , timestamp: blockData.timestamp,},
         "type": genericConstants.NOTIFICATION_TYPE.EMAIL,
         "sentFromEmail": Config.POSTED_BY,
-        "sentFromName": Config.SENT_BY,
+        "sentFromName": userAddress.description,
         "addedOn": Date.now(),
     }
 }
@@ -129,7 +130,7 @@ const sendDataToQueue = async (type, transaction, userAddress, transactionType, 
     let rabbitMqController = new RabbitMqController();
     Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
-    // await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
+    await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
 
 }
 
