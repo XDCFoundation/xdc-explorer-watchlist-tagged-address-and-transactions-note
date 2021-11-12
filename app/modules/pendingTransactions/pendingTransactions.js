@@ -9,7 +9,7 @@ let newTransactions, userAddresses;
 export default class BlockManager {
     async syncTransactions() {
         try {
-            userAddresses = {};
+            userAddresses = [];
             userAddresses = await UserAddressModel.getFilteredData(
                 {
                     "notification.isEnabled": true,
