@@ -3,7 +3,7 @@ import {amqpConstants, genericConstants, httpConstants} from "../../common/const
 import UserAddressModel from "../../models/UserWhitelistAddress";
 import Utils from "../../utils";
 import RabbitMqController from "../queue/index";
-
+import moment from "moment";
 
 let newTransactions, userAddresses;
 export default class BlockManager {
@@ -16,7 +16,7 @@ export default class BlockManager {
                     "notification.type": {$in: ["INOUT", "IN", "OUT"]}
                 });
 
-            Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+            Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", userAddresses, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
         } catch (err) {
             Utils.lhtLog("syncTransactions", `catch block error: ${err}`, err, "kajalB", httpConstants.LOG_LEVEL_TYPE.ERROR)
@@ -26,6 +26,8 @@ export default class BlockManager {
 
     async listenAddresses() {
         try {
+            Utils.lhtLog("listenAddresses", " listener started", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+
             newTransactions = web3.eth.subscribe("newBlockHeaders", (error, result) => {
                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders listener startes", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                 if (!result) {
@@ -53,7 +55,7 @@ export default class BlockManager {
                                 })
 
                                 if (userAddress) {
-                                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {
+                                Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {
                                         userAddress,
                                         transaction
                                     }, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
@@ -110,7 +112,7 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
 const getMailNotificationResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
     return {
         "title": "Watchlist Address",
-        "description": `<html><head>Welcome to Xinfin Explorer</head><body><h1>${transactionValue} xdc  ${transactionType} ${userAddress.description}</h1></body></html>`,
+        "description": getMailBody(type, transaction, userAddress, transactionType, blockData, transactionValue),
         "timestamp": blockData.timestamp,
         "userID": userAddress.userId,
         "postedTo": userAddress.userId,
@@ -130,7 +132,33 @@ const sendDataToQueue = async (type, transaction, userAddress, transactionType, 
     let rabbitMqController = new RabbitMqController();
     Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
-    await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
+   await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
 
 }
 
+const getMailBody = (type, transaction, userAddress, transactionType, blockData, transactionValue) =>{
+    if(transactionType === genericConstants.TRANSACTION_TYPES.RECEIVED)
+    return (
+        `<html>
+            <body><h3>
+             Hi ${userAddress.description},<br>
+            The address ${userAddress.address} received ${transactionValue} Ether FROM the address ${transaction.from}.<br>
+            This transaction was processed at block index ${transaction.blockNumber} (TxHash https://etherscan.io/tx/${transaction.transactionHash}) on ${moment.unix(blockData.timestamp).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+            Please see <a href="https://etherscan.io/address/${userAddress.address}">https://etherscan.io/address/${userAddress.address}</a> for additional information.<br>
+            Best Regards, -Team Etherscan
+            </h3>
+            </body></html>`
+    )
+    else 
+    return (
+        `<html>
+        <body><h3>
+         Hi ${userAddress.description},<br>
+        The address ${userAddress.address} sent ${transactionValue} Ether to the address ${transaction.to}.<br>
+        This transaction was processed at block index ${transaction.blockNumber} (TxHash https://etherscan.io/tx/${transaction.transactionHash}) on ${moment.unix(blockData.timestamp).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+        Please see <a href="https://etherscan.io/address/${userAddress.address}">https://etherscan.io/address/${userAddress.address}</a> for additional information.<br>
+        Best Regards, -Team Etherscan
+        </h3>
+        </body></html>`
+    )
+}
