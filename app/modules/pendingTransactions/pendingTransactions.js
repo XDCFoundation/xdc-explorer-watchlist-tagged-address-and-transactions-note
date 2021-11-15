@@ -15,8 +15,8 @@ export default class BlockManager {
                     "notification.isEnabled": true,
                     "notification.type": {$in: ["INOUT", "IN", "OUT"]}
                 });
-
-            Utils.lhtLog("syncTransactions", "getNewBlockHeaders listener", userAddresses, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                
+            Utils.lhtLog("syncTransactions", "get adresses listener", userAddresses.length, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
         } catch (err) {
             Utils.lhtLog("syncTransactions", `catch block error: ${err}`, err, "kajalB", httpConstants.LOG_LEVEL_TYPE.ERROR)
@@ -50,15 +50,16 @@ export default class BlockManager {
                                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders getTransactionReceipt", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                                 if (!transactionReceipt || transactionReceipt.status === false)
                                     return;
-                                let userAddress = userAddresses && userAddresses.find((userAddress) => {
+                                let userAddress = userAddresses && userAddresses.filter((userAddress) => {
                                     if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) return userAddress
                                 })
-
-                                if (userAddress) {
+                                Utils.lhtLog("listenAddresses", "blocklength", userAddresses.length, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                                if (userAddress.length >0 ) {
                                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders useraddress matched", {
                                         userAddress,
                                         transaction
                                     }, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                                    userAddress.map(async(userAddress)=>{
                                     if (userAddress.notification.type === "INOUT" && (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase())) {
                                         let transactionType = "";
                                         if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) transactionType = genericConstants.TRANSACTION_TYPES.SENT
@@ -71,6 +72,7 @@ export default class BlockManager {
                                     } else if (userAddress.notification.type === "OUT" && userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) {
                                         await sendDataToQueue("OUT", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.SENT, blockData, transaction.value);
                                     }
+                                })
                                 }
                             })
                         })
@@ -127,12 +129,12 @@ const getMailNotificationResponse = (type, transaction, userAddress, transaction
 const sendDataToQueue = async (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
 
     let notificationRes = getNotificatonResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
-    console.log("notificationRes", notificationRes);
+    // console.log("notificationRes", notificationRes);
     let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
     let rabbitMqController = new RabbitMqController();
     Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
-   await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
+    await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(mailNotificationRes));
 
 }
 
