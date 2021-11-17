@@ -29,9 +29,16 @@ module.exports = (app) => {
 
     app.put("/edit-address-tag", ValidationManger.validateEditTagAddressLable, new TaggedAddress().editTagAddress);
 
+    app.put("/delete-address-tag", ValidationManger.validateDeleteTagAddress, new TaggedAddress().deleteTagAddress);
+
     app.put("/edit-watchlist", ValidationManger.validateEditWatchList, new AddWatchList().editWatchList);
 
+    app.put("/delete-watchlist", ValidationManger.validateDeleteWatchList, new AddWatchList().deleteWatchList);
+
     app.put("/edit-transaction-Private-note", ValidationManger.validateEditTransactionPrivateNote, new TrxPvtModule().editTransactionPrivateNote);
+
+    app.put("/delete-transaction-Private-note", ValidationManger.validateDeleteTransactionPrivateNote, new TrxPvtModule().deleteTransactionPrivateNote);
+
 
     app.post("/get-content-watchlist", new AddWatchList().getContentWatchlist);
 
@@ -40,5 +47,7 @@ module.exports = (app) => {
     app.post("/get-content-tag-address", new TaggedAddress().getContentTagAddress);
 
     app.post("/search", new Serach().searchData);
+
+
 
 };

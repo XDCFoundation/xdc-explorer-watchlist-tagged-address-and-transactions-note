@@ -13,7 +13,8 @@ export default class BlockManager {
             userAddresses = await UserAddressModel.getFilteredData(
                 {
                     "notification.isEnabled": true,
-                    "notification.type": {$in: ["INOUT", "IN", "OUT"]}
+                    "notification.type": {$in: ["INOUT", "IN", "OUT"]},
+                    "isDeleted":false
                 });
                 
             Utils.lhtLog("syncTransactions", "get adresses listener", userAddresses.length, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)

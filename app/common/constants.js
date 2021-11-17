@@ -77,7 +77,9 @@ export const apiSuccessMessage = {
   FETCH_SUCCESS: 'Information fetched successfully',
   USER_GET_SUCCESS:'User is successfully added',
   USER_DATA_CHANGE: "User data successfully changed",
-  INFO_UPDATED:'User info is sucessfully Updated'
+  INFO_UPDATED:'User info is sucessfully Updated',
+  DATA_DELETED_SUCCESSFULLY : 'Data Deleted Successfully'
+
 }
 
 export const apiEndpoints = {
@@ -98,7 +100,8 @@ export const apiFailureMessage = {
   BAD_REQUEST: 'Bad Request!',
   DEVICE_ID_OR_SESSION_TOKEN_EMPTY: 'Device id or session token can\'t be empty or null',
   SESSION_GENERATION: 'Unable to generate session!',
-  SESSION_EXPIRED: 'Session Expired!'
+  SESSION_EXPIRED: 'Session Expired!',
+  CANNOT_DELETE_DATA: 'Cannot Delete Data',
 }
 
 

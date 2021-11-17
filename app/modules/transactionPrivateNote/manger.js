@@ -15,6 +15,7 @@ export default class Manger {
     try {
       let userId = await UserTransactionSchema.findOne({
         userId: requestData.userId,
+        isDeleted:false
       });
       // console.log("userId: ", userId);
       if (!userId) {
@@ -74,4 +75,31 @@ export default class Manger {
       throw error;
     }
   };
+  async deleteTransactionPrivateNote(request) {
+    if (!request)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try {
+      let noteDetails = await UserTransactionSchema.findOneUserTransaction({
+        _id: request._id,
+      });
+      if (!noteDetails) {
+        throw Utils.error(
+          {},
+          apiFailureMessage.ID_NOT_EXISTS,
+          httpConstants.RESPONSE_CODES.FORBIDDEN
+        );
+      }
+      const response = await UserTransactionSchema.findAndUpdateData(
+        { _id: request._id }, { $set: { isDeleted: true, modifiedOn: new Date().getTime() } }
+      );
+
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

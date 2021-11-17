@@ -5,7 +5,6 @@ import {
 } from "../../common/constants";
 import Utils from "../../utils";
 import TagAddressSchema from "../../models/UserWhitelistAddress";
-import UserAddressSchema from "../../models/UserWhitelistAddress";
 
 const parseGetcontentRequest = (requestObj) => {
     if (!requestObj) return {};
@@ -172,6 +171,7 @@ export default class Manger {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
+            request["isDeleted"] = false;
             let contentRequest = parseGetcontentRequest(request);
 
             const tagAddressContent = await TagAddressSchema.getFilteredData(
@@ -187,5 +187,34 @@ export default class Manger {
         } catch (err) {
             throw err;
         }
+    }
+
+    async deleteTagAddress(request){
+        if (!request)
+        throw Utils.error(
+            {},
+            apiFailureMessage.INVALID_PARAMS,
+            httpConstants.RESPONSE_CODES.FORBIDDEN
+        );
+    try {
+        let tagAddress = await TagAddressSchema.findOneData({
+            _id: request._id,
+            isTaggedAddress:true
+        });
+        if (!tagAddress) {
+            throw Utils.error(
+                {},
+                apiFailureMessage.ID_NOT_EXISTS,
+                httpConstants.RESPONSE_CODES.FORBIDDEN
+            );
+        }
+        const response = await TagAddressSchema.findAndUpdateData(
+           {_id:request._id}, {$set: {isDeleted:true , modifiedOn : new Date().getTime()}}
+        );
+       
+        return response;
+    } catch (err) {
+        throw err;
+    }
     }
 }

@@ -16,7 +16,7 @@ export default class Manger {
     try {
       const searchTable = requestData.search;
       delete requestData.search;
-
+      requestData["isDeleted"] = false;
       if (searchTable === SearchData.WATCHLIST) {
         let contentRequest = Utility.parseGetContentRequest(requestData);
         const contentList = await UserAddressSchema.getFilteredData(

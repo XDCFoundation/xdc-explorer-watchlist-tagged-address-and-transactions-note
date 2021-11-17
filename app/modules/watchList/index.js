@@ -112,4 +112,32 @@ export default class AddWatchList {
       Utils.handleError(error, request, response);
     }
   }
+
+  async deleteWatchList(request, response) {
+    if (!request)
+      throw Utils.error(
+        {},
+        apiFailureMessage.INVALID_PARAMS,
+        httpConstants.RESPONSE_CODES.FORBIDDEN
+      );
+    try {
+      const [error, addUserResponse] = await Utils.parseResponse(
+        new BlManager().deleteWatchList(request.body)
+      );
+      if (error || !addUserResponse) {
+        return Utils.handleError(error || apiFailureMessage.CANNOT_DELETE_DATA, request, response);
+      }
+      return Utils.response(
+        response,
+        addUserResponse,
+        apiSuccessMessage.DATA_DELETED_SUCCESSFULLY,
+        httpConstants.RESPONSE_STATUS.SUCCESS,
+        httpConstants.RESPONSE_CODES.OK
+      );
+    } catch (error) {
+      Utils.handleError(error, request, response);
+    }
+  }
+  
 }
+
