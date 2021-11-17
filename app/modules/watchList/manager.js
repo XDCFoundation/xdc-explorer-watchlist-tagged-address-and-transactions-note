@@ -1,6 +1,7 @@
 import Utils from "../../utils";
 import UserAddressSchema from "../../models/UserWhitelistAddress";
 import {apiFailureMessage, httpConstants} from "../../common/constants";
+import { request } from "express";
 
 const parseGetcontentRequest = (requestObj) => {
     if (!requestObj) return {};
@@ -166,6 +167,7 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
+            request["isDeleted"]=false
             let contentRequest = parseGetcontentRequest(request);
 
             const watchlistContent = await UserAddressSchema.getFilteredData(
@@ -181,5 +183,34 @@ export default class BlManager {
         } catch (err) {
             throw err;
         }
+    }
+
+    async deleteWatchList(request){
+        if (!request)
+        throw Utils.error(
+            {},
+            apiFailureMessage.INVALID_PARAMS,
+            httpConstants.RESPONSE_CODES.FORBIDDEN
+        );
+    try {
+        let userDetail = await UserAddressSchema.getUserAddress({
+            _id: request._id,
+            isWatchlistAddress:true
+        });
+        if (!userDetail) {
+            throw Utils.error(
+                {},
+                apiFailureMessage.ID_NOT_EXISTS,
+                httpConstants.RESPONSE_CODES.FORBIDDEN
+            );
+        }
+        const response = await UserAddressSchema.findAndUpdateData(
+           {_id:request._id}, {$set: {isDeleted:true , modifiedOn : new Date().getTime()}}
+        );
+       
+        return response;
+    } catch (err) {
+        throw err;
+    }
     }
 }

@@ -39,6 +39,12 @@ module.exports = {
     });
     await validate(schema, req.body, res, next);
   },
+  validateDeleteTagAddress: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required()
+    });
+    await validate(schema, req.body, res, next);
+  },
   validateUserAddress: async (req, res, next) => {
     const schema = yup.object().shape({
       userId: yup.string().required(),
@@ -63,6 +69,12 @@ module.exports = {
     });
     await validate(schema, req.body, res, next);
   },
+  validateDeleteWatchList: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required()
+    });
+    await validate(schema, req.body, res, next);
+  },
   validateEditTransactionPrivateNote: async (req, res, next) => {
     const schema = yup.object().shape({
       _id: yup.string().required(),
@@ -71,7 +83,14 @@ module.exports = {
     });
     await validate(schema, req.body, res, next);
   },
+  validateDeleteTransactionPrivateNote: async (req, res, next) => {
+    const schema = yup.object().shape({
+      _id: yup.string().required()
+    });
+    await validate(schema, req.body, res, next);
+  },
 };
+
 
 const validate = async (schema, reqData, res, next) => {
   try {

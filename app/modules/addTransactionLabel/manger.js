@@ -108,6 +108,7 @@ export default class Manger {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
+            request["isDeleted"]=false;
             let contentRequest = parseGetcontentRequest(request);
 
             const txnLabelContent = await UserTransactionSchema.getFilteredData(
