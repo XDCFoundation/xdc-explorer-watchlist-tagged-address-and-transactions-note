@@ -78,12 +78,27 @@ export default class Manger {
                     httpConstants.RESPONSE_CODES.FORBIDDEN
                 );
             }
-            let lableTrx = new UserTransactionSchema(requestData);
-            return await lableTrx.save();
+            let addressObj = this.parsePrivateNoteData(requestData);
+            return await addressObj.saveData();
         } catch (error) {
             throw error;
         }
     };
+
+    parsePrivateNoteData(requestObj) {
+        let addressObj = new UserTransactionSchema(requestObj);
+        addressObj.transactionHash = requestObj.transactionHash;
+        addressObj.userId = requestObj.userId;
+        addressObj.trxLable = requestObj.trxLable;
+        addressObj.addedOn = Date.now();
+        addressObj.note = requestObj.note;
+        addressObj.isDeleted = false;
+        addressObj.isActive = true;
+        addressObj.createdOn = Date.now();
+        addressObj.modifiedOn = Date.now();
+        return addressObj;
+
+    }
 
 
   getTransactionPrivateNoteUsingHash = async (reqObj) => {
