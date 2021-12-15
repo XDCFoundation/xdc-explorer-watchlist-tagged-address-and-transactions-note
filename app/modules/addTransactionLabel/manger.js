@@ -66,17 +66,18 @@ export default class Manger {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
-            let transactionHash = await UserTransactionSchema.findOne({
-                transactionHash: requestData.transactionHash,
+            let transactionHash = await UserTransactionSchema.find({
                 userId: requestData.userId,
             });
-
-            if (transactionHash) {
-                throw Utils.error(
-                    {},
-                    apiFailureMessage.ALREADY_TRANSACTION_HASH_EXIST,
-                    httpConstants.RESPONSE_CODES.FORBIDDEN
-                );
+            let hashLength = transactionHash.length;
+            for(var i=0; i<hashLength; i++){
+                if (transactionHash[i].transactionHash === requestData.transactionHash) {
+                    throw Utils.error(
+                        {},
+                        apiFailureMessage.ALREADY_TRANSACTION_HASH_EXIST,
+                        httpConstants.RESPONSE_CODES.FORBIDDEN
+                    );
+                }
             }
             let addressObj = this.parsePrivateNoteData(requestData);
             return await addressObj.saveData();

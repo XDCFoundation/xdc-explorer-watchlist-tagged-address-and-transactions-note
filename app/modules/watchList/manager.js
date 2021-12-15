@@ -58,13 +58,15 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
-            let addressDetail = await WatchlistAddressSchema.findOne({
-                address: request.address,
+            let addressDetail = await WatchlistAddressSchema.find({
+                userId: request.userId
             });
-            if (addressDetail) {
-                throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+            let addressLength = addressDetail.length;
+            for(var i=0; i<addressLength; i++){
+                if (addressDetail[i].address === request.address) {
+                    throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+                }
             }
-
             let addressObj = this.parseWatchlistData(request);
             return await addressObj.saveData();
         } catch (err) {
