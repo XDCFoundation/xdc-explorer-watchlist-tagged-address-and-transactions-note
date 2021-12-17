@@ -4,7 +4,7 @@ import {
     httpConstants,
 } from "../../common/constants";
 import Utils from "../../utils";
-import TagAddressSchema from "../../models/UserWhitelistAddress";
+import TagAddressSchema from "../../models/UserTagAddress";
 
 const parseGetcontentRequest = (requestObj) => {
     if (!requestObj) return {};
@@ -61,15 +61,17 @@ export default class Manger {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
-            let TagDetails = await TagAddressSchema.findOneData({
-                address: request.address,
+            let TagDetails = await TagAddressSchema.find({
+                userId: request.userId
             });
-            if (TagDetails) {
-                throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
-            } else {
-                let addressObj = this.parseTagAddressData(request);
-                return await addressObj.saveData();
+            let addressCount = TagDetails.length;
+            for(var i=0; i<addressCount; i++){
+                if (TagDetails[i].address === request.address) {
+                    throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+                }
             }
+            let addressObj = this.parseTagAddressData(request);
+            return await addressObj.saveData();
         } catch (error) {
             throw error;
         }

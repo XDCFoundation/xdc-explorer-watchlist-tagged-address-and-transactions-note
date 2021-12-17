@@ -1,6 +1,6 @@
 import Config from "../../../config";
 import {amqpConstants, genericConstants, httpConstants} from "../../common/constants";
-import UserAddressModel from "../../models/UserWhitelistAddress";
+import WatchlistAddressSchema from "../../models/UserWatchlistAddress";
 import Utils from "../../utils";
 import RabbitMqController from "../queue/index";
 import moment from "moment";
@@ -10,7 +10,7 @@ export default class BlockManager {
     async syncTransactions() {
         try {
             userAddresses = [];
-            userAddresses = await UserAddressModel.getFilteredData(
+            userAddresses = await WatchlistAddressSchema.getFilteredData(
                 {
                     "notification.isEnabled": true,
                     "notification.type": {$in: ["INOUT", "IN", "OUT"]},

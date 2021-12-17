@@ -1,5 +1,5 @@
 import Utils from "../../utils";
-import UserAddressSchema from "../../models/UserWhitelistAddress";
+import WatchlistAddressSchema from "../../models/UserWatchlistAddress";
 import {apiFailureMessage, httpConstants} from "../../common/constants";
 import { request } from "express";
 
@@ -58,13 +58,15 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
-            let addressDetail = await UserAddressSchema.findOne({
-                address: request.address,
+            let addressDetail = await WatchlistAddressSchema.find({
+                userId: request.userId
             });
-            if (addressDetail) {
-                throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+            let addressLength = addressDetail.length;
+            for(var i=0; i<addressLength; i++){
+                if (addressDetail[i].address === request.address) {
+                    throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+                }
             }
-
             let addressObj = this.parseWatchlistData(request);
             return await addressObj.saveData();
         } catch (err) {
@@ -73,7 +75,7 @@ export default class BlManager {
     };
 
     parseWatchlistData(requestObj) {
-        let addressObj = new UserAddressSchema(requestObj);
+        let addressObj = new WatchlistAddressSchema(requestObj);
         addressObj.address = requestObj.address;
         addressObj.userId = requestObj.userId;
         addressObj.description = requestObj.description;
@@ -100,7 +102,7 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         try {
-            let userDetail = await UserAddressSchema.getUserAddress({
+            let userDetail = await WatchlistAddressSchema.getUserAddress({
                 _id: request._id,
             });
             userDetail = {
@@ -120,7 +122,7 @@ export default class BlManager {
             if (request.description) {
                 userDetail["description"] = request.description;
             }
-            const editWatchlistData = await UserAddressSchema.findAndUpdateData(
+            const editWatchlistData = await WatchlistAddressSchema.findAndUpdateData(
                 {_id: request._id},
                 userDetail
             );
@@ -138,7 +140,7 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
 
-        return await UserAddressSchema.find({
+        return await WatchlistAddressSchema.find({
             isActive: true,
             isDeleted: false,
             userId: requestData.userId,
@@ -170,7 +172,7 @@ export default class BlManager {
             request["isDeleted"]=false
             let contentRequest = parseGetcontentRequest(request);
 
-            const watchlistContent = await UserAddressSchema.getFilteredData(
+            const watchlistContent = await WatchlistAddressSchema.getFilteredData(
                 contentRequest.requestData,
                 contentRequest.selectionKeys,
                 contentRequest.skip,
@@ -193,7 +195,7 @@ export default class BlManager {
             httpConstants.RESPONSE_CODES.FORBIDDEN
         );
     try {
-        let userDetail = await UserAddressSchema.getUserAddress({
+        let userDetail = await WatchlistAddressSchema.getUserAddress({
             _id: request._id,
             isWatchlistAddress:true
         });
@@ -204,7 +206,7 @@ export default class BlManager {
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
         }
-        const response = await UserAddressSchema.findAndUpdateData(
+        const response = await WatchlistAddressSchema.findAndUpdateData(
            {_id:request._id}, {$set: {isDeleted:true , modifiedOn : new Date().getTime()}}
         );
        

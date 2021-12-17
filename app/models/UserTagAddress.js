@@ -1,11 +1,11 @@
 let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
-const WhitelistAddressSchema = new Schema({
+const TagAddressSchema = new Schema({
     address: {type: String, default: ""},
     userId: {type: String, default: ""},
     description: {type: String, default: ""},
-    tagName: {type: String, default: ''},
+    tagName: {type: Array, default: ['']},
     balance: {type: Number, default: 0},
     addedOn: {type: Number, default: Date.now()},
     notification: {
@@ -20,13 +20,13 @@ const WhitelistAddressSchema = new Schema({
     modifiedOn: {type: Number, default: Date.now()},
 });
 
-WhitelistAddressSchema.method({
+TagAddressSchema.method({
     saveData: async function () {
         return await this.save();
     },
 });
 
-WhitelistAddressSchema.static({
+TagAddressSchema.static({
     getUserAddress: function (findQuery) {
         return this.findOne(findQuery);
     },
@@ -71,4 +71,4 @@ WhitelistAddressSchema.static({
             .exec();
     },
 });
-module.exports = mongoose.model("xin-user-watchlist-address", WhitelistAddressSchema);
+module.exports = mongoose.model("xin-user-tag-address", TagAddressSchema);
