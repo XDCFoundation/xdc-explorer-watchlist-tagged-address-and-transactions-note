@@ -71,4 +71,4 @@ WhitelistAddressSchema.static({
             .exec();
     },
 });
-module.exports = mongoose.model("xin-user-whitelist-address", WhitelistAddressSchema);
+module.exports = mongoose.model("xin-user-watchlist-address", WhitelistAddressSchema);
