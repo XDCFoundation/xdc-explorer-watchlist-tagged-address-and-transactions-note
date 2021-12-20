@@ -40,7 +40,7 @@ export default class BlockManager {
                 Utils.lhtLog("listenAddresses", "getNewBlockHeaders onData", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
 
                 web3.eth.getBlock(blockHeader.hash, true, async (error, blockData) => {
-                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders getBlock", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
+                    Utils.lhtLog("listenAddresses", "getNewBlockHeaders getBlock", blockDara, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                     if (!blockData)
                         return;
                     if (blockData && blockData.transactions && blockData.transactions.length > 0) {
