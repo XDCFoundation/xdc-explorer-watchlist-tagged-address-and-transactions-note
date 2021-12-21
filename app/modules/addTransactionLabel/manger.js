@@ -71,12 +71,21 @@ export default class Manger {
             });
             let hashLength = transactionHash.length;
             for(var i=0; i<hashLength; i++){
-                if (transactionHash[i].transactionHash === requestData.transactionHash) {
+                if (transactionHash[i].transactionHash === requestData.transactionHash && transactionHash[i].isDeleted === false) {
                     throw Utils.error(
                         {},
                         apiFailureMessage.ALREADY_TRANSACTION_HASH_EXIST,
                         httpConstants.RESPONSE_CODES.FORBIDDEN
                     );
+                }
+                else if(transactionHash[i].transactionHash === requestData.transactionHash && transactionHash[i].isDeleted === true){
+                  return await UserTransactionSchema.findAndUpdateData({transactionHash:requestData.transactionHash,userId:requestData.userId},
+                        {
+                            trxLable:requestData.trxLable,
+                            isDeleted:false,
+                            modifiedOn:Date.now()
+                        }
+                        )
                 }
             }
             let addressObj = this.parsePrivateNoteData(requestData);
