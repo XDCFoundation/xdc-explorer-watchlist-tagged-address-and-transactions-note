@@ -66,8 +66,15 @@ export default class Manger {
             });
             let addressCount = TagDetails.length;
             for(var i=0; i<addressCount; i++){
-                if (TagDetails[i].address === request.address) {
+                if (TagDetails[i].address === request.address && TagDetails[i].isDeleted === false ) {
                     throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+                }
+                else if(TagDetails[i].address === request.address && TagDetails[i].isDeleted === true){
+                  return await  TagAddressSchema.findAndUpdateData({address:request.address , userId:request.userId},{
+                        tagName:request.tagName,
+                        isDeleted:false,
+                        modifiedOn:Date.now()
+                    })
                 }
             }
             let addressObj = this.parseTagAddressData(request);

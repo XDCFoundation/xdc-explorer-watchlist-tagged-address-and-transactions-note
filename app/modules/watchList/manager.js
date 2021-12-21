@@ -63,8 +63,18 @@ export default class BlManager {
             });
             let addressLength = addressDetail.length;
             for(var i=0; i<addressLength; i++){
-                if (addressDetail[i].address === request.address) {
+                if (addressDetail[i].address === request.address && addressDetail[i].isDeleted === false) {
                     throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
+                }
+                else if(addressDetail[i].address === request.address && addressDetail[i].isDeleted === true){
+                   return await WatchlistAddressSchema.findAndUpdateData({userId: request.userId , address:request.address},
+                    {
+                        description:request.description,
+                        isDeleted:false,
+                        modifiedOn:Date.now()
+
+                    }
+                    )
                 }
             }
             let addressObj = this.parseWatchlistData(request);
