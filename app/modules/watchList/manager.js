@@ -71,8 +71,8 @@ export default class BlManager {
                     {
                         description:request.description,
                         isDeleted:false,
-                        modifiedOn:Date.now()
-
+                        modifiedOn:Date.now(),
+                        notification:request && request.notification ? request.notification : {}
                     }
                     )
                 }
