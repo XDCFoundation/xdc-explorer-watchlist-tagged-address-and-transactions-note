@@ -1,6 +1,7 @@
 import Config from "../../../config";
 import {amqpConstants, genericConstants, httpConstants} from "../../common/constants";
 import WatchlistAddressSchema from "../../models/UserWatchlistAddress";
+import UserSchema from "../../models/user";
 import Utils from "../../utils";
 import RabbitMqController from "../queue/index";
 import moment from "moment";
@@ -61,17 +62,19 @@ export default class BlockManager {
                                         transaction
                                     }, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
                                     userAddress.map(async(userAddress)=>{
+                                    let transactionValue = getTransactionValue(transaction.value)
                                     if (userAddress.notification.type === "INOUT" && (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase() || userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase())) {
                                         let transactionType = "";
                                         if (userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) transactionType = genericConstants.TRANSACTION_TYPES.SENT
                                         else
                                             transactionType = genericConstants.TRANSACTION_TYPES.RECEIVED
-                                        await sendDataToQueue("INOUT", transactionReceipt, userAddress, transactionType, blockData, transaction.value);
+                                        await sendDataToQueue("INOUT", transactionReceipt, userAddress, transactionType, blockData, transactionValue);
                                     } else if (userAddress.notification.type === "IN" && userAddress.address.toLowerCase() === transactionReceipt.to.toLowerCase()) {
-                                        await sendDataToQueue("IN", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.RECEIVED, blockData, transaction.value);
+                                        
+                                        await sendDataToQueue("IN", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.RECEIVED, blockData, transactionValue);
 
                                     } else if (userAddress.notification.type === "OUT" && userAddress.address.toLowerCase() === transactionReceipt.from.toLowerCase()) {
-                                        await sendDataToQueue("OUT", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.SENT, blockData, transaction.value);
+                                        await sendDataToQueue("OUT", transactionReceipt, userAddress, genericConstants.TRANSACTION_TYPES.SENT, blockData, transactionValue);
                                     }
                                 })
                                 }
@@ -112,10 +115,10 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
 }
 
 
-const getMailNotificationResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
+const getMailNotificationResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue , name) => {
     return {
         "title": "Watchlist Address",
-        "description": getMailBody(type, transaction, userAddress, transactionType, blockData, transactionValue),
+        "description": getMailBody(type, transaction, userAddress, transactionType, blockData, transactionValue , name),
         "timestamp": blockData.timestamp,
         "userID": userAddress.userId,
         "postedTo": userAddress.userId,
@@ -128,10 +131,10 @@ const getMailNotificationResponse = (type, transaction, userAddress, transaction
     }
 }
 const sendDataToQueue = async (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
-
-    let notificationRes = getNotificatonResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
+    const userDetails = await UserSchema.getUserDetails({userId:userAddress.userId})
+    let notificationRes = getNotificatonResponse(type, transaction, userAddress, transactionType, blockData, transactionValue )
     // console.log("notificationRes", notificationRes);
-    let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue)
+    let mailNotificationRes = getMailNotificationResponse(type, transaction, userAddress, transactionType, blockData, transactionValue , userDetails.name)
     let rabbitMqController = new RabbitMqController();
     Utils.lhtLog("sendDataToQueue", "sendDataToQueue", notificationRes, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
     await rabbitMqController.insertInQueue(Config.NOTIFICATION_EXCHANGE, Config.NOTIFICATION_QUEUE, "", "", "", "", "", amqpConstants.exchangeType.FANOUT, amqpConstants.queueType.PUBLISHER_SUBSCRIBER_QUEUE, JSON.stringify(notificationRes));
@@ -139,16 +142,16 @@ const sendDataToQueue = async (type, transaction, userAddress, transactionType, 
 
 }
 
-const getMailBody = (type, transaction, userAddress, transactionType, blockData, transactionValue) =>{
+const getMailBody = (type, transaction, userAddress, transactionType, blockData, transactionValue , name) =>{
     if(transactionType === genericConstants.TRANSACTION_TYPES.RECEIVED)
     return (
         `<html>
             <body><h3>
-             Hi ${userAddress.description},<br>
-            The address ${userAddress.address} received ${transactionValue} Ether FROM the address ${transaction.from}.<br>
-            This transaction was processed at block index ${transaction.blockNumber} (TxHash https://etherscan.io/tx/${transaction.transactionHash}) on ${moment.unix(blockData.timestamp).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
-            Please see <a href="https://etherscan.io/address/${userAddress.address}">https://etherscan.io/address/${userAddress.address}</a> for additional information.<br>
-            Best Regards, -Team Etherscan
+             Hi ${name},<br>
+            The address ${userAddress.address} received ${transactionValue} XDC from the address ${transaction.from}.<br>
+            This transaction was processed at block index ${transaction.blockNumber} (TxHash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+            Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br>
+            Best Regards, -Team XDC Observatory
             </h3>
             </body></html>`
     )
@@ -157,11 +160,15 @@ const getMailBody = (type, transaction, userAddress, transactionType, blockData,
         `<html>
         <body><h3>
          Hi ${userAddress.description},<br>
-        The address ${userAddress.address} sent ${transactionValue} Ether to the address ${transaction.to}.<br>
-        This transaction was processed at block index ${transaction.blockNumber} (TxHash https://etherscan.io/tx/${transaction.transactionHash}) on ${moment.unix(blockData.timestamp).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
-        Please see <a href="https://etherscan.io/address/${userAddress.address}">https://etherscan.io/address/${userAddress.address}</a> for additional information.<br>
-        Best Regards, -Team Etherscan
+        The address ${userAddress.address} sent ${transactionValue} XDC to the address ${transaction.to}.<br>
+        This transaction was processed at block index ${transaction.blockNumber} (TxHash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+        Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br>
+        Best Regards, -Team XDC Observatory
         </h3>
         </body></html>`
     )
+}
+
+const getTransactionValue = (value) =>{
+    return  value / 1000000000000000000;
 }
