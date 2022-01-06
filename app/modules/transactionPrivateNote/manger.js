@@ -13,7 +13,7 @@ export default class Manger {
     // console.log(requestData);
 
     try {
-      let userId = await UserTransactionSchema.findOne({
+      let userId = await UserTransactionSchema.find({
         userId: requestData.userId,
         isDeleted:false
       });
