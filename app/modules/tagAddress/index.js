@@ -34,13 +34,14 @@ export default class Index {
   }
 
     async getUserAddressTagUsingHash(request, response) {
+      try {
         if (!request || !request.body.userId || !request.body.address)
             throw Utils.error(
                 {},
                 apiFailureMessage.INVALID_PARAMS,
                 httpConstants.RESPONSE_CODES.FORBIDDEN
             );
-        try {
+      
             const [error, addUserResponse] = await Utils.parseResponse(
                 new Manager().getUserAddressTagUsingHash(request.body)
             );
@@ -55,7 +56,7 @@ export default class Index {
                 httpConstants.RESPONSE_CODES.OK
             );
         } catch (error) {
-            Utils.handleError(error, request, response);
+           throw Utils.handleError(error, request, response);
         }
     }
 
