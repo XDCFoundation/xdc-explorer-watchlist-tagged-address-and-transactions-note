@@ -15,7 +15,7 @@ export default class Manger {
     try {
       let userId = await UserTransactionSchema.find({
         userId: requestData.userId,
-        isDeleted:false
+        isDeleted: false
       });
       // console.log("userId: ", userId);
       if (!userId) {
@@ -26,7 +26,8 @@ export default class Manger {
         );
       }
 
-      return await UserTransactionSchema.find(requestData);
+      // return await UserTransactionSchema.find(requestData);
+      return userId;
     } catch (error) {
       throw error;
     }
