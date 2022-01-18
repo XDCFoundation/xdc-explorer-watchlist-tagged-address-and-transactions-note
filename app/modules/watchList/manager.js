@@ -128,9 +128,11 @@ export default class BlManager {
             if (request.address) {
                 userDetail["address"] = request.address;
             }
-
             if (request.description) {
                 userDetail["description"] = request.description;
+            }
+            if (request.notification && request.notification.type && request.notification.isEnabled) {
+                userDetail["notification"] = request.notification
             }
             const editWatchlistData = await WatchlistAddressSchema.findAndUpdateData(
                 {_id: request._id},
