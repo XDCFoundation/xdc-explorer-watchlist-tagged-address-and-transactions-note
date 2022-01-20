@@ -183,17 +183,18 @@ export default class BlManager {
             request["isDeleted"]=false
             let contentRequest = parseGetcontentRequest(request);
 
-            const watchlistContent = await WatchlistAddressSchema.getFilteredData(
-                contentRequest.requestData,
-                contentRequest.selectionKeys,
-                contentRequest.skip,
-                contentRequest.limit,
-                contentRequest.sortingKey
-            );
+            // const watchlistContent = await WatchlistAddressSchema.getFilteredData(
+            //     contentRequest.requestData,
+            //     contentRequest.selectionKeys,
+            //     contentRequest.skip,
+            //     contentRequest.limit,
+            //     contentRequest.sortingKey
+            // );
 
+            let skip=(typeof contentRequest.skip === 'object')?0:Number(contentRequest.skip);
             let query=[
                 {$match:contentRequest.requestData},
-                {$skip:Number(contentRequest.skip)},
+                {$skip:skip},
                 {$limit:Number(contentRequest.limit)},
                 {
                     $lookup:{
@@ -223,7 +224,7 @@ export default class BlManager {
             let res=await WatchlistAddressSchema.aggregate(query).catch((err)=>{
                 console.log("err",err);
             });
-            let totalCount = watchlistContent ? watchlistContent.length : 0;
+            let totalCount = res ? res.length : 0;
             return {res, totalCount};
         } catch (err) {
             throw err;
