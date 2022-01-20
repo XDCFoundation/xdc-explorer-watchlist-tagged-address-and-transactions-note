@@ -221,11 +221,11 @@ export default class BlManager {
                 }}
             ]
 
-            let res=await WatchlistAddressSchema.aggregate(query).catch((err)=>{
+            let watchlistContent=await WatchlistAddressSchema.aggregate(query).catch((err)=>{
                 console.log("err",err);
             });
-            let totalCount = res ? res.length : 0;
-            return {res, totalCount};
+            let totalCount = watchlistContent ? watchlistContent.length : 0;
+            return {watchlistContent, totalCount};
         } catch (err) {
             throw err;
         }
