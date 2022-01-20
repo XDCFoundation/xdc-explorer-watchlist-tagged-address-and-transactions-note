@@ -1,7 +1,6 @@
 import Utils from "../../utils";
 import WatchlistAddressSchema from "../../models/UserWatchlistAddress";
 import {apiFailureMessage, httpConstants} from "../../common/constants";
-import { request } from "express";
 
 const parseGetcontentRequest = (requestObj) => {
     if (!requestObj) return {};
@@ -191,9 +190,41 @@ export default class BlManager {
                 contentRequest.limit,
                 contentRequest.sortingKey
             );
+
+            let query=[
+                {$match:contentRequest.requestData},
+                {$skip:Number(contentRequest.skip)},
+                {$limit:Number(contentRequest.limit)},
+                {
+                    $lookup:{
+                        "from":"xin-accounts",
+                        "localField":"address",
+                        "foreignField":"address",
+                        "as":"addressDetail"
+                    }
+                },
+                {$project:{
+                        address: 1,
+                        userId:1,
+                        description: 1,
+                        balance:{$arrayElemAt:[{$cond:{if:{$gt:[{$size:"$addressDetail"},0]},then:"$addressDetail.balance",else:[0]}},0]},
+                        tagName: 1,
+                        addedOn: 1,
+                        notification: 1,
+                        isTaggedAddress: 1,
+                        isWatchlistAddress: 1,
+                        isDeleted:1,
+                        isActive: 1,
+                        createdOn: 1,
+                        modifiedOn: 1
+                }}
+            ]
+
+            let res=await WatchlistAddressSchema.aggregate(query).catch((err)=>{
+                console.log("err",err);
+            });
             let totalCount = watchlistContent ? watchlistContent.length : 0;
-            let response = {watchlistContent, totalCount};
-            return response;
+            return {res, totalCount};
         } catch (err) {
             throw err;
         }
