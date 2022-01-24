@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 const WatchlistAddressSchema = new Schema({
     address: {type: String, default: ""},
     userId: {type: String, default: ""},
-    description: {type: String, default: ""},
+    // description: {type: String, default: ""},
     tagName: {type: String, default: ''},
     balance: {type: Number, default: 0},
     addedOn: {type: Number, default: Date.now()},

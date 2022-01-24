@@ -50,7 +50,7 @@ const parseGetcontentRequest = (requestObj) => {
 
 export default class BlManager {
     addWatchlist = async (request) => {
-        if (!request || !request.userId || !request.address || !request.description)
+        if (!request || !request.userId || !request.address)
             throw Utils.error(
                 {},
                 apiFailureMessage.INVALID_PARAMS,
@@ -68,7 +68,6 @@ export default class BlManager {
                 else if(addressDetail[i].address === request.address && addressDetail[i].isDeleted === true){
                    return await WatchlistAddressSchema.findAndUpdateData({userId: request.userId , address:request.address},
                     {
-                        description:request.description,
                         isDeleted:false,
                         modifiedOn:Date.now(),
                         notification:request && request.notification ? request.notification : {}
