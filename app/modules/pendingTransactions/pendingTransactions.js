@@ -149,7 +149,7 @@ const getMailBody = (type, transaction, userAddress, transactionType, blockData,
             <body><h3>
              Hi ${name},<br><br>
             The address ${userAddress.address} received ${transactionValue} XDC from the address ${transaction.from}.<br>
-            This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+            This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} UTC.<br>
             Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br><br>
             Best Regards<br><br>Team XDC Observatory
             </h3>
@@ -161,7 +161,7 @@ const getMailBody = (type, transaction, userAddress, transactionType, blockData,
         <body><h3>
          Hi ${userAddress.description},<br><br>
         The address ${userAddress.address} sent ${transactionValue} XDC to the address ${transaction.to}.<br>
-        This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} utc.<br>
+        This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} UTC.<br>
         Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br><br>
         Best Regards<br><br>Team XDC Observatory
         </h3>
