@@ -100,7 +100,7 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
 
     return {
         "title": "Watchlist Address",
-        "description": `${transactionValue} xdc  ${transactionType} ${userAddress.description}`,
+        "description": `${transactionValue} XDC  ${transactionType} ${userAddress.description}`,
         "postedTo": userAddress.userId,
         "postedBy": 'Xinfin Explorer',
         "timestamp": blockData.timestamp,
