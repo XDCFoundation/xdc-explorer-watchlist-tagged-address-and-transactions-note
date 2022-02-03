@@ -97,10 +97,11 @@ export default class BlockManager {
 
 const getNotificatonResponse = (type, transaction, userAddress, transactionType, blockData, transactionValue) => {
     Utils.lhtLog("getNotificatonResponse", "getNotificatonResponse", {}, "kajal", httpConstants.LOG_LEVEL_TYPE.INFO)
-
+    userAddress = JSON.stringify(userAddress)
+    userAddress= JSON.parse(userAddress)
     return {
         "title": "Watchlist Address",
-        "description": `${transactionValue} XDC  ${transactionType} ${userAddress.description}`,
+        "description": `${transactionValue} XDC  ${transactionType} ${userAddress.description || ""}`,
         "postedTo": userAddress.userId,
         "postedBy": 'Xinfin Explorer',
         "timestamp": blockData.timestamp,
