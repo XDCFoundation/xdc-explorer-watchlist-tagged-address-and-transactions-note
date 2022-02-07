@@ -65,7 +65,7 @@ export const genericConstants = {
   DEVICE_TYPE: {},
   TRANSACTION_TYPES:{
     RECEIVED:"received from",
-    SENT:"sent by"
+    SENT:"sent to"
   },
   NOTIFICATION_TYPE:{
     PUSH:"push",
