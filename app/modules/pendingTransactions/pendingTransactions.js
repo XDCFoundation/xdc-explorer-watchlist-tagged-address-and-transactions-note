@@ -101,7 +101,7 @@ const getNotificatonResponse = (type, transaction, userAddress, transactionType,
     userAddress= JSON.parse(userAddress)
     return {
         "title": "Watchlist Address",
-        "description": `${transactionValue} XDC  ${transactionType} ${userAddress.description || ""}`,
+        "description": `${transactionValue} XDC  ${transactionType} ${transactionType === genericConstants.TRANSACTION_TYPES.RECEIVED ? transaction.from : transaction.to}`,
         "postedTo": userAddress.userId,
         "postedBy": 'Xinfin Explorer',
         "timestamp": blockData.timestamp,
@@ -148,7 +148,8 @@ const getMailBody = (type, transaction, userAddress, transactionType, blockData,
     return (
         `<html>
             <body><h3>
-             Hi ${name},<br><br>
+             Hi,
+             <br><br>
             The address ${userAddress.address} received ${transactionValue} XDC from the address ${transaction.from}.<br>
             This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} UTC.<br>
             Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br><br>
@@ -160,7 +161,8 @@ const getMailBody = (type, transaction, userAddress, transactionType, blockData,
     return (
         `<html>
         <body><h3>
-         Hi ${userAddress.description},<br><br>
+         Hi,
+         <br><br>
         The address ${userAddress.address} sent ${transactionValue} XDC to the address ${transaction.to}.<br>
         This transaction was processed at block index ${transaction.blockNumber} (Transaction Hash ${Config.WEB_APP_URL}/transaction-details/${transaction.transactionHash}) on ${moment.utc(moment(blockData.timestamp * 1000)).format("YYYY-MM-DD HH:mm:ss")} UTC.<br>
         Please see <a href="${Config.WEB_APP_URL}/address-details/${userAddress.address}">${Config.WEB_APP_URL}/address-details/${userAddress.address}</a> for additional information.<br><br>
