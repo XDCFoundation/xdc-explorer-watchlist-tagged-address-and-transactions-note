@@ -60,12 +60,15 @@ export default class BlManager {
             let addressDetail = await WatchlistAddressSchema.find({
                 userId: request.userId
             });
+            Utils.lhtLog('Watchlist: BL Manager', `add-watchlist`, addressDetail.length, '', httpConstants.LOG_LEVEL_TYPE.INFO)
             let addressLength = addressDetail.length;
             for(var i=0; i<addressLength; i++){
                 if (addressDetail[i].address === request.address && addressDetail[i].isDeleted === false) {
+                    Utils.lhtLog('Watchlist: BL Manager', `add-watchlist`, "Address Already Exist", '', httpConstants.LOG_LEVEL_TYPE.INFO)
                     throw apiFailureMessage.ADDRESS_ALREADY_EXISTS;
                 }
                 else if(addressDetail[i].address === request.address && addressDetail[i].isDeleted === true){
+                    Utils.lhtLog('Watchlist: BL Manager', `add-watchlist`, "New Address", '', httpConstants.LOG_LEVEL_TYPE.INFO)
                    return await WatchlistAddressSchema.findAndUpdateData({userId: request.userId , address:request.address},
                     {
                         isDeleted:false,
@@ -76,6 +79,7 @@ export default class BlManager {
                 }
             }
             let addressObj = this.parseWatchlistData(request);
+            Utils.lhtLog('Watchlist: BL Manager', `add-watchlist`, addressObj, '', httpConstants.LOG_LEVEL_TYPE.INFO)
             return await addressObj.saveData();
         } catch (err) {
             throw err;
