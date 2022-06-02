@@ -122,8 +122,7 @@ export default class BlManager {
     }
     if (
       request.notification &&
-      request.notification.type &&
-      request.notification.isEnabled
+      request.notification.type 
     ) {
       userDetail["notification"] = request.notification;
     }
